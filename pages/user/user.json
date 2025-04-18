@@ -1,0 +1,6 @@
+{
+  "defaultTitle": "我的",
+  "usingComponents": {
+    "custom-tabbar": "/components/tabbar/tabbar"
+  }
+}

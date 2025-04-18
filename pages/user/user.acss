@@ -1,0 +1,366 @@
+/* 全局容器 */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100rpx);
+  padding-bottom: 100rpx;
+  background-color: #f8f8f8;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.page-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+
+/* 用户信息区域 */
+.user-info-section {
+  position: relative;
+  background: linear-gradient(-45deg, #6a11cb, #2575fc, #00c6ff, #30e3a2);
+  background-size: 600% 600%;
+  animation: gradientBG 12s ease infinite;
+  padding: 40rpx 30rpx;
+  color: #fff;
+  overflow: hidden;
+  min-height: 400rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx; /* 增加圆角 */
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.2); /* 增加阴影 */
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.auth-section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+}
+
+.auth-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+  width: 100%;
+}
+
+.default-avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.15);
+  /*  border: 4rpx solid rgba(255, 255, 255, 0.3); 添加描边 */
+}
+
+.auth-text {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.welcome-text {
+  font-size: 40rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+  display: block;
+  text-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+  letter-spacing: 2rpx; /* 增加字间距 */
+}
+
+.auth-desc {
+  font-size: 28rpx;
+  opacity: 0.9;
+  letter-spacing: 1rpx;
+}
+
+.auth-btn {
+  width: 80% !important;
+  height: 96rpx !important;
+  line-height: 96rpx !important;
+  border-radius: 48rpx !important;
+  font-size: 32rpx !important;
+  font-weight: bold !important;
+  background: linear-gradient(90deg, #4a90e2, #6ab1f7) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 6rpx 12rpx rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: skewX(-20deg);
+  transition: left 0.4s ease;
+}
+
+.auth-btn:hover::before,
+.auth-btn:active::before {
+  left: 100%;
+}
+
+.auth-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1) !important;
+}
+
+.dingtalk-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 12rpx;
+}
+
+.user-profile {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 30rpx;
+  margin-right: 30rpx;
+  box-shadow: 0 6rpx 12rpx rgba(0, 0, 0, 0.1); /* 增加阴影 */
+  /*  border: 4rpx solid rgba(255, 255, 255, 0.3); 添加描边 */
+}
+
+.user-detail {
+  flex: 1;
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+  display: block;
+  color: #fff;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+.user-tags {
+  display: flex;
+  gap: 12rpx;
+}
+
+.tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: #fff;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 用户数据概览 */
+.user-stats {
+  margin: -40rpx 20rpx 20rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between; /* 水平分布均匀 */
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.1); /* 增强阴影 */
+  position: relative;
+  z-index: 2;
+}
+
+.stat-item {
+  width: 300rpx; /* 固定宽度 */
+  height: 160rpx; /* 固定高度 */
+  display: flex;
+  flex-direction: column; /* 垂直排列 */
+  align-items: center; /* 水平居中 */
+  justify-content: center; /* 垂直居中 */
+  border-right: 2rpx solid #f5f5f5; /* 分隔线 */
+  transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+.stat-item:last-child {
+  border-right: none; /* 最后一个不加右边框 */
+}
+
+.stat-item:hover {
+  transform: scale(1.05); /* 鼠标悬停时放大 */
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%; /* 圆形图标 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1); /* 添加阴影 */
+}
+
+.stat-icon image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.points-icon {
+  background: linear-gradient(135deg, #ff9800, #ffc107);
+}
+
+.order-icon {
+  background: linear-gradient(135deg, #4caf50, #8bc34a);
+}
+
+.balance-icon {
+  background: linear-gradient(135deg, #f37521, #f44f03);
+}
+
+.stat-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center; /* 数字居中对齐 */
+  margin-bottom: 8rpx;
+  letter-spacing: 1rpx; /* 增加字间距 */
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666;
+  text-align: center; /* 标签居中对齐 */
+  letter-spacing: 1rpx; /* 增加字间距 */
+}
+
+/* 功能列表 */
+.function-list {
+  margin: 20rpx;
+}
+
+.function-group {
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.1); /* 增强阴影 */
+}
+
+.function-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx;
+  border-bottom: 2rpx solid #f5f5f5;
+  transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+.function-item:last-child {
+  border-bottom: none;
+}
+
+.function-item:hover {
+  background: #f9f9f9; /* 鼠标悬停时背景色变化 */
+}
+
+.function-left {
+  display: flex;
+  align-items: center;
+}
+
+.function-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 20rpx;
+  border-radius: 12rpx; /* 图标圆角 */
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1); /* 添加阴影 */
+}
+
+.function-text {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+  letter-spacing: 1rpx; /* 增加字间距 */
+}
+
+.function-right {
+  display: flex;
+  align-items: center;
+}
+
+.function-desc {
+  font-size: 26rpx;
+  color: #999;
+  margin-right: 12rpx;
+  letter-spacing: 1rpx; /* 增加字间距 */
+}
+
+.arrow-icon {
+  width: 32rpx;
+  height: 32rpx;
+  opacity: 0.5;
+  transition: opacity 0.3s ease; /* 添加过渡效果 */
+}
+
+.function-item:hover .arrow-icon {
+  opacity: 1; /* 鼠标悬停时箭头变亮 */
+}
+
+/* 退出按钮 */
+.logout-section {
+  margin: 40rpx 20rpx;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #ff4d4f, #ff7875);
+  color: #fff;
+  border: none;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.1);
+  /*  padding: 20rpx; */
+  transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+.logout-btn:hover {
+  transform: scale(1.02); /* 鼠标悬停时放大 */
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.2);
+}

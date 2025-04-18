@@ -1,0 +1,34 @@
+<!-- pages/home/index.axml -->
+<view class="container">
+
+  <scroll-view scroll-y class="cart-list">
+    <view class="multi-row-grid">
+      <block a:for="{{cartItems}}" a:key="id">
+        <view class="vertical-card">
+          <view class="card-content">
+            <image class="product-thumb" src="{{item.image}}" mode="aspectFill" />
+            <view class="product-info">
+              <text class="product-title">{{item.name}}</text>
+              <view class="price-section">
+                <text class="price-text">¥{{item.price.toFixed(2)}}</text>
+                <view class="quantity-picker">
+                  <text class="btn-quantity" onTap="decreaseQuantity" data-id="{{item.id}}">-</text>
+                  <text class="quantity-value">{{item.quantity}}</text>
+                  <text class="btn-quantity" onTap="increaseQuantity" data-id="{{item.id}}">+</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <view class="cart-footer">
+    <text class="total-price">总价：¥{{totalPrice.toFixed(2)}}</text>
+    <view class="footer-buttons">
+      <button class="clear-btn" onTap="clearCart">清空</button>
+      <button class="checkout-btn">去结算</button>
+    </view>
+  </view>
+</view>

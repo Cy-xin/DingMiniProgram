@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/cart/cart",
+    "pages/user/user"
+  ],
+  "tabBar": {
+    "textColor": "#999999",
+    "selectedColor": "rgb(0, 81, 255)",
+    "backgroundColor": "#ffffff",
+    "items": [
+      {
+        "pagePath": "pages/index/index",
+        "name": "首页",
+        "icon": "assets/tabbar/icons/home.png",
+        "activeIcon": "assets/tabbar/icons-active/home-active.png"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "name": "购物车",
+        "icon": "assets/tabbar/icons/cart.png",
+        "activeIcon": "assets/tabbar/icons-active/cart-active.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "name": "我的",
+        "icon": "assets/tabbar/icons/user.png",
+        "activeIcon": "assets/tabbar/icons-active/user-active.png"
+      }
+    ]
+  }
+}

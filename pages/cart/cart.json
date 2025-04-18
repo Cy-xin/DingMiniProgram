@@ -1,0 +1,6 @@
+{
+  "defaultTitle": "购物车",
+  "usingComponents": {
+    "custom-tabbar": "/components/tabbar/tabbar"
+  }
+}

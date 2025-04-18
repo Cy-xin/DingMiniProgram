@@ -1,0 +1,19 @@
+<!-- components/tabbar/tabar.axml -->
+<view class="tab-bar">
+  <view 
+    class="tab-item {{selectedPath === item.pagePath ? 'active' : ''}}" 
+    data-path="{{item.pagePath}}" 
+    onTap="switchTab"
+    a:for="{{tabList}}"
+  >
+    <view class="tab-icon-wrapper">
+      <image 
+        class="tab-icon" 
+        src="{{selectedPath === item.pagePath ? item.selectedIconPath : item.iconPath}}" 
+        mode="aspectFit"
+      />
+      <view class="tab-badge" a:if="{{item.badge}}">{{item.badge}}</view>
+    </view>
+    <text class="tab-text {{selectedPath === item.pagePath ? 'active' : ''}}">{{item.text}}</text>
+  </view>
+</view>

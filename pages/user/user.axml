@@ -1,0 +1,101 @@
+<view class="page-container">
+  <view class="user-info-section">
+    <block a:if="{{!isAuthorized}}">
+      <view class="auth-section">
+        <view class="auth-content">
+          <image class="default-avatar" src="/assets/default-avatar.jpg" mode="aspectFill"/>
+          <view class="auth-text">
+            <text class="welcome-text">欢迎使用嘉兴市特殊教育学校团购</text>
+            <text class="auth-desc">授权后即可使用完整功能</text>
+          </view>
+          <button class="auth-btn" onTap="handleAuth">钉钉一键登录</button>
+        </view>
+      </view>
+    </block>
+    <block a:else>
+      <view class="user-profile">
+        <view class="profile-header">
+          <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"/>
+          <view class="user-detail">
+            <text class="nickname">{{userInfo.name}}</text>
+            <view class="user-tags">
+              <text class="tag">教职工</text>
+              <text class="tag">已认证</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="user-stats" a:if="{{isAuthorized}}">
+    <view class="stat-item">
+      <view class="stat-icon points-icon">
+        <image src="/assets/icons/points.png" mode="aspectFit"/>
+      </view>
+      <view class="stat-info">
+        <text class="stat-value">{{points || 0}}</text>
+        <text class="stat-label">积分</text>
+      </view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-icon order-icon">
+        <image src="/assets/icons/order.png" mode="aspectFit"/>
+      </view>
+      <view class="stat-info">
+        <text class="stat-value">{{credits || 0}}</text>
+        <text class="stat-label">订单</text>
+      </view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-icon balance-icon">
+        <image src="/assets/icons/balance.png" mode="aspectFit"/>
+      </view>
+      <view class="stat-info">
+        <text class="stat-value">{{balance || 0}}</text>
+        <text class="stat-label">余额</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="function-list" a:if="{{isAuthorized}}">
+    <view class="function-group">
+      <view class="function-item" onTap="navigateToOrders">
+        <view class="function-left">
+          <image class="function-icon" src="/assets/icons/order.png" mode="aspectFit"/>
+          <text class="function-text">我的订单</text>
+        </view>
+        <view class="function-right">
+          <text class="function-desc">查看订单记录</text>
+          <image class="arrow-icon" src="/assets/icons/arrow-right.png" mode="aspectFit"/>
+        </view>
+      </view>
+      <view class="function-item" onTap="navigateToPoints">
+        <view class="function-left">
+          <image class="function-icon" src="/assets/icons/points.png" mode="aspectFit"/>
+          <text class="function-text">积分明细</text>
+        </view>
+        <view class="function-right">
+          <text class="function-desc">查看积分记录</text>
+          <image class="arrow-icon" src="/assets/icons/arrow-right.png" mode="aspectFit"/>
+        </view>
+      </view>
+      <view class="function-item" onTap="navigateToBalance">
+        <view class="function-left">
+          <image class="function-icon" src="/assets/icons/balance.png" mode="aspectFit"/>
+          <text class="function-text">余额明细</text>
+        </view>
+        <view class="function-right">
+          <text class="function-desc">查看余额记录</text>
+          <image class="arrow-icon" src="/assets/icons/arrow-right.png" mode="aspectFit"/>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="logout-section" a:if="{{isAuthorized}}">
+    <button class="logout-btn" onTap="handleLogout">退出登录</button>
+  </view>
+
+  <custom-tabbar />
+</view>

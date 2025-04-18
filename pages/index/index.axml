@@ -1,0 +1,62 @@
+<!-- pages/home/index.axml -->
+<view class="page-container">
+  <!-- 轮播图（固定高度） -->
+  <swiper class="banner-swiper" autoplay interval="5000" circular indicator-dots="{{true}}">
+    <block a:for="{{banners}}" a:key="id">
+      <swiper-item>
+        <image class="banner-image" src="{{item.image}}" mode="aspectFill" />
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <!-- 主体内容（flex布局） -->
+  <view class="main-wrapper">
+    <!-- 分类菜单（固定宽度） -->
+    <view class="menu-list">
+      <block a:for="{{categories}}" a:key="id">
+        <text class="menu-item {{currentCategory.id === item.id ? 'active' : ''}}" 
+          onTap="selectCategory" 
+          data-id="{{item.id}}"
+          style="padding: 20rpx 15rpx;font-size:26rpx"
+        >
+          {{item.name}}
+        </text>
+      </block>
+    </view>
+
+    <!-- 商品列表（滚动区域） -->
+    <scroll-view 
+      scroll-y 
+      class="product-scroll"
+    >
+      <view class="product-list">
+        <block a:for="{{filteredProducts}}" a:key="id">
+          <view class="product-item">
+            <image class="product-image" src="{{item.image}}" mode="aspectFill" onTap="previewImage" data-src="{{item.image}}" />
+            <view class="product-info">
+              <text class="product-name">{{item.name}}</text>
+              <view class="price-row">
+                <text class="product-price">¥{{item.price.toFixed(2)}}</text>
+              </view>
+              <view class="quantity-control">
+                <text class="quantity-button" onTap="decreaseQuantity" data-id="{{item.id}}">-</text>
+                <text class="quantity-display">{{quantities[item.id] || 0}}</text>
+                <text class="quantity-button" onTap="increaseQuantity" data-id="{{item.id}}">+</text>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 购物车按钮（固定定位） -->
+  <view class="cart-button-wrapper">
+    <button class="cart-button">
+      <image src="/assets/tabbar/icons-active/cart-active.png" class="cart-icon" />
+      <text class="cart-badge">{{cartItems.length}}</text>
+    </button>
+  </view>
+
+  <custom-tabbar />
+</view>
