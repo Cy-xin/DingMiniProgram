@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/cart/cart",
-    "pages/user/user"
+    "pages/user/user",
+    "pages/checkout/checkout"
   ],
   "tabBar": {
     "textColor": "#999999",
@@ -28,5 +29,8 @@
         "activeIcon": "assets/tabbar/icons-active/user-active.png"
       }
     ]
+  },
+  "window": {
+    "defaultTitle": "嘉兴市特殊教育学校团购"
   }
 }

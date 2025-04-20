@@ -261,4 +261,27 @@ Page({
       }
     });
   },
+
+  /**
+   * 跳转到结账单页面
+   */
+  goToCheckout() {
+    const app = getApp();
+    const cartItems = app.globalData.cartItems;
+
+    // 检查购物车是否为空
+    if (cartItems.length === 0) {
+      dd.alert({
+        title: '提示',
+        content: '购物车为空，无法结算',
+        buttonText: '确定',
+      });
+      return;
+    }
+
+    // 跳转到结账单页面
+    dd.navigateTo({
+      url: `/pages/checkout/checkout?cartItems=${encodeURIComponent(JSON.stringify(cartItems))}&totalPrice=${this.data.totalPrice}`
+    });
+  },
 });

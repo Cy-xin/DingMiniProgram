@@ -28,7 +28,7 @@
     <text class="total-price">总价：¥{{totalPrice.toFixed(2)}}</text>
     <view class="footer-buttons">
       <button class="clear-btn" onTap="clearCart">清空</button>
-      <button class="checkout-btn">去结算</button>
+      <button class="checkout-btn" onTap="goToCheckout">去结算</button>
     </view>
   </view>
 </view>

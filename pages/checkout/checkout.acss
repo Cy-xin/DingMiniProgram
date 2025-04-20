@@ -1,0 +1,145 @@
+.container {
+    padding: 24rpx;
+    background-color: #f8f9fa;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .address-section {
+    background: #fff;
+    border-radius: 16rpx;
+    padding: 24rpx;
+    margin-bottom: 20rpx;
+  }
+  
+  .address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16rpx;
+  }
+  
+  .address-title {
+    font-size: 28rpx;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .address-edit {
+    font-size: 24rpx;
+    color: #409eff;
+  }
+  
+  .address-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8rpx;
+  }
+  
+  .address-name {
+    font-size: 26rpx;
+    color: #333;
+  }
+  
+  .address-phone {
+    font-size: 24rpx;
+    color: #666;
+  }
+  
+  .address-detail {
+    font-size: 24rpx;
+    color: #666;
+  }
+  
+  .address-empty {
+    font-size: 24rpx;
+    color: #999;
+    text-align: center;
+    padding: 20rpx 0;
+  }
+  
+  .product-section {
+    background: #fff;
+    border-radius: 16rpx;
+    padding: 24rpx;
+    margin-bottom: 20rpx;
+  }
+  
+  .section-title {
+    font-size: 28rpx;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 16rpx;
+  }
+  
+  .product-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20rpx;
+  }
+  
+  .product-image {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 8rpx;
+    margin-right: 20rpx;
+  }
+  
+  .product-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8rpx;
+  }
+  
+  .product-name {
+    font-size: 26rpx;
+    color: #333;
+  }
+  
+  .product-price {
+    font-size: 24rpx;
+    color: #e4393c;
+  }
+  
+  .product-quantity {
+    font-size: 24rpx;
+    color: #666;
+  }
+  
+  .total-section {
+    background: #fff;
+    border-radius: 16rpx;
+    padding: 24rpx;
+    margin-bottom: 20rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .total-label {
+    font-size: 28rpx;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .total-price {
+    font-size: 28rpx;
+    color: #e4393c;
+    font-weight: bold;
+  }
+  
+  .submit-section {
+    background: #fff;
+    border-radius: 16rpx;
+    padding: 24rpx;
+  }
+  
+  .submit-btn {
+    background: #409eff;
+    color: white;
+    border-radius: 40rpx;
+    text-align: center;
+  }
+  
