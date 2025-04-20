@@ -213,7 +213,7 @@ Page({
   fetchCartDataFromServer() {
     const app = getApp();
     dd.httpRequest({
-      url: "http://127.0.0.1:8081/cart/getCartInfo",
+      url: `${app.globalData.baseUrl}/cart/getCartInfo`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token
@@ -244,7 +244,7 @@ Page({
   syncCartDataToServer(cartItems) {
     const app = getApp();
     dd.httpRequest({
-      url: "http://127.0.0.1:8081/cart/saveCartItemByMobile",
+      url: `${app.globalData.baseUrl}/cart/saveCartItemByMobile`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
