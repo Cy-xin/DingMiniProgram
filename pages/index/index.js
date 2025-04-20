@@ -233,6 +233,7 @@ Page({
     if (quantity > 0) {
       if (index === -1) {
         cartItems.push({
+          productId: product.id,
           ...product,
           quantity
         });
@@ -248,8 +249,38 @@ Page({
     app.globalData.cartItems = cartItems;
     this.setData({ cartItems });
 
+    // 如果用户已登录，同步购物车数据到后端
+    if (app.globalData.isAuthorized) {
+      this.syncCartDataToServer(cartItems);
+    }
+
     // 通过事件总线通知购物车页面
     app.eventBus.emit('cartUpdated', cartItems);
+  },
+
+  /**
+   * 同步购物车数据到后端
+   * @param {Array} cartItems - 购物车数据
+   */
+  syncCartDataToServer(cartItems) {
+    const app = getApp();
+    dd.httpRequest({
+      url: "http://127.0.0.1:8081/cart/saveCartItemByMobile",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + app.globalData.token
+      },
+      data: JSON.stringify({ cartItems }),
+      success: (res) => {
+        if (res.data.code !== 200) {
+          console.error("同步购物车数据失败:", res.data);
+        }
+      },
+      fail: (err) => {
+        console.error("同步购物车数据失败:", err);
+      }
+    });
   },
 
   /**

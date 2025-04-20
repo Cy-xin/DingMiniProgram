@@ -136,11 +136,8 @@ Page({
                 that.getUserOrderDetail();
               }
 
-              // 用户登录后同步购物车数据
-              const cartPage = getCurrentPages().find(page => page.route === 'pages/cart/cart');
-              if (cartPage) {
-                cartPage.syncCartData();
-              }
+              // 用户登录后加载购物车数据
+              that.fetchCartDataFromServer();
             },
             fail: (err) => {
               console.error('保存用户信息失败:', err);
@@ -160,6 +157,36 @@ Page({
           content: '网络请求失败',
           type: 'fail'
         });
+      }
+    });
+  },
+
+  /**
+   * 从服务器获取购物车数据
+   */
+  fetchCartDataFromServer() {
+    const app = getApp();
+    dd.httpRequest({
+      url: "http://127.0.0.1:8081/cart/getCartInfo",
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + app.globalData.token
+      },
+      success: (res) => {
+        if (res.data.code === 200) {
+          const cartItems = res.data.data;
+          if (!Array.isArray(cartItems)) {
+            console.error('fetchCartDataFromServer: cartItems 不是数组', cartItems);
+            return;
+          }
+          // 同步到全局数据
+          app.globalData.cartItems = cartItems;
+          // 通知购物车页面更新数据
+          app.eventBus.emit('cartUpdated', cartItems);
+        }
+      },
+      fail: (err) => {
+        console.error("获取购物车数据失败:", err);
       }
     });
   },
@@ -231,6 +258,28 @@ Page({
           content: '网络请求失败',
           type: 'fail'
         });
+
+        //重新登录页面
+        dd.removeStorage({
+          key: 'userInfo',
+          success: () => {
+            // 更新全局数据
+            const app = getApp();
+            app.globalData.isAuthorized = false;
+            app.globalData.userInfo = null;
+            app.globalData.token = null;
+
+            // 更新页面数据
+            that.setData({
+              isAuthorized: false,
+              userInfo: null,
+              points: 0,
+              credits: 0,
+              balance: 0
+            });
+          }
+        });
+        
       }
     });
   },

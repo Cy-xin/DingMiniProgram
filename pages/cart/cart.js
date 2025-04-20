@@ -34,6 +34,11 @@ Page({
       this.setData({ cartItems });
       this.calculateTotal(cartItems);
     });
+
+    // 如果用户已登录，从服务器加载购物车数据
+    if (app.globalData.isAuthorized) {
+      this.fetchCartDataFromServer();
+    }
   },
 
   onHide() {
@@ -83,11 +88,20 @@ Page({
     const app = getApp();
     const cartItems = app.globalData.cartItems.map(item => {
       if (item.id === productId) {
-        return {...item, quantity: item.quantity + 1};
+        return {
+          productId: item.id, // 确保 id 字段被正确传递
+          ...item,
+          quantity: item.quantity + 1
+        };
       }
       return item;
     });
     this.updateCart(cartItems);
+
+    // 如果用户已登录，同步购物车数据到后端
+    if (app.globalData.isAuthorized) {
+      this.syncCartDataToServer(cartItems);
+    }
   },
 
   /**
@@ -101,11 +115,20 @@ Page({
     let cartItems = app.globalData.cartItems.map(item => {
       if (item.id === productId) {
         const newQty = item.quantity - 1;
-        return newQty > 0 ? {...item, quantity: newQty} : null;
+        return newQty > 0 ? {
+          productId: item.id, // 确保 id 字段被正确传递
+          ...item,
+          quantity: newQty
+        } : null;
       }
       return item;
     }).filter(Boolean);
     this.updateCart(cartItems);
+
+    // 如果用户已登录，同步购物车数据到后端
+    if (app.globalData.isAuthorized) {
+      this.syncCartDataToServer(cartItems);
+    }
 
     // 通知首页更新购物车数据
     app.eventBus.emit('cartUpdated', cartItems);
@@ -173,7 +196,68 @@ Page({
           });
           // 更新购物车徽标
           this.updateCartBadge();
+
+          // 通知首页更新购物车数据
+          app.eventBus.emit('cartUpdated', []);
+
+          // 请求后端更新数据
+          this.syncCartDataToServer(null);
         }
+      }
+    });
+  },
+
+  /**
+   * 从服务器获取购物车数据
+   */
+  fetchCartDataFromServer() {
+    const app = getApp();
+    dd.httpRequest({
+      url: "http://127.0.0.1:8081/cart/getCartInfo",
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + app.globalData.token
+      },
+      success: (res) => {
+        if (res.data.code === 200) {
+          const cartItems = res.data.data;
+          if (!Array.isArray(cartItems)) {
+            console.error('fetchCartDataFromServer: cartItems 不是数组', cartItems);
+            return;
+          }
+          // 同步到全局数据
+          app.globalData.cartItems = cartItems;
+          this.setData({ cartItems });
+          this.calculateTotal(cartItems);
+        }
+      },
+      fail: (err) => {
+        console.error("获取购物车数据失败:", err);
+      }
+    });
+  },
+
+  /**
+   * 同步购物车数据到后端
+   * @param {Array} cartItems - 购物车数据
+   */
+  syncCartDataToServer(cartItems) {
+    const app = getApp();
+    dd.httpRequest({
+      url: "http://127.0.0.1:8081/cart/saveCartItemByMobile",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + app.globalData.token
+      },
+      data: JSON.stringify({ cartItems }),
+      success: (res) => {
+        if (res.data.code !== 200) {
+          console.error("同步购物车数据失败:", res.data);
+        }
+      },
+      fail: (err) => {
+        console.error("同步购物车数据失败:", err);
       }
     });
   },
