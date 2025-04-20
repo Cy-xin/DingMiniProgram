@@ -141,9 +141,28 @@ Page({
 
   /**
    * 增加商品数量
-   * @param {Object} e - 事件对象
+   *
+   * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
    */
   increaseQuantity(e) {
+    const app = getApp();
+
+    // 检查用户是否已登录
+    if (!app.globalData.isAuthorized) {
+      dd.alert({
+        title: '提示',
+        content: '您需要登录后才能添加商品到购物车，请先登录',
+        buttonText: '确定',
+        success: () => {
+          // 跳转到"我的"页面
+          dd.switchTab({
+            url: '/pages/user/user'
+          });
+        }
+      });
+      return;
+    }
+
     const productId = e.currentTarget.dataset.id;
     const quantities = this.data.quantities;
     quantities[productId] = (quantities[productId] || 0) + 1;
@@ -155,9 +174,28 @@ Page({
 
   /**
    * 减少商品数量
-   * @param {Object} e - 事件对象
+   *
+   * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
    */
   decreaseQuantity(e) {
+    const app = getApp();
+
+    // 检查用户是否已登录
+    if (!app.globalData.isAuthorized) {
+      dd.alert({
+        title: '提示',
+        content: '您需要登录后才能修改购物车，请先登录',
+        buttonText: '确定',
+        success: () => {
+          // 跳转到"我的"页面
+          dd.switchTab({
+            url: '/pages/user/user'
+          });
+        }
+      });
+      return;
+    }
+
     const productId = e.currentTarget.dataset.id;
     const quantities = this.data.quantities;
     if (quantities[productId] > 0) {

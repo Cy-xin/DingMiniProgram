@@ -6,9 +6,9 @@
       <text class="address-edit">修改</text>
     </view>
     <view class="address-info" a:if="{{address}}">
-      <text class="address-name">{{address.name}}</text>
-      <text class="address-phone">{{address.phone}}</text>
-      <text class="address-detail">{{address.detail}}</text>
+      <text class="address-name">收件人：{{address.name}}</text>
+      <text class="address-phone">手机号：{{address.phone}}</text>
+      <text class="address-detail">详细地址：{{address.detail}}</text>
     </view>
     <view class="address-info" a:else>
       <text class="address-empty">请添加收货地址</text>

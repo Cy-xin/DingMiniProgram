@@ -113,7 +113,6 @@ Page({
             data: userInfo,
             success: () => {
               // 更新全局数据
-              const app = getApp();
               app.globalData.isAuthorized = true;
               app.globalData.userInfo = userInfo;
               app.globalData.token = userInfo.token; // 假设 userInfo 中包含 token
@@ -184,6 +183,9 @@ Page({
           app.globalData.cartItems = cartItems;
           // 通知购物车页面更新数据
           app.eventBus.emit('cartUpdated', cartItems);
+
+          // 更新购物车徽标
+          this.updateCartBadge();
         }
       },
       fail: (err) => {
@@ -191,6 +193,25 @@ Page({
       }
     });
   },
+
+    /**
+   * 更新购物车徽标
+   */
+    updateCartBadge() {
+      const app = getApp();
+      const total = app.globalData.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+      console.log("更新徽标", total);
+      if (total > 0) {
+        dd.setTabBarBadge({
+          index: 1, // 假设购物车是第二个tab（索引从0开始）
+          text: `${total}`
+        });
+      } else {
+        dd.removeTabBarBadge({
+          index: 1
+        });
+      }
+    },
 
   /**
    * 获取用户积分、订单数量、余额等信息
@@ -289,6 +310,7 @@ Page({
    * 处理退出登录
    */
   handleLogout() {
+    const app = getApp();
     dd.confirm({
       title: '提示',
       content: '确定要退出登录吗？',
@@ -300,10 +322,12 @@ Page({
             key: 'userInfo',
             success: () => {
               // 更新全局数据
-              const app = getApp();
               app.globalData.isAuthorized = false;
               app.globalData.userInfo = null;
               app.globalData.token = null;
+
+              // 清空购物车数据
+              app.globalData.cartItems = [];
 
               // 更新页面数据
               this.setData({
@@ -313,6 +337,9 @@ Page({
                 credits: 0,
                 balance: 0
               });
+
+              // 通知购物车页面更新数据
+              app.eventBus.emit('cartUpdated', []);
 
               // 用户退出登录后同步购物车数据
               const cartPage = getCurrentPages().find(page => page.route === 'pages/cart/cart');

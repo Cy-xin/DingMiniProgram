@@ -27,15 +27,20 @@ Page({
   fetchUserAddress() {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/user/getAddress`,
+      url: `${app.globalData.baseUrl}/dingTalkOrder/getAddress`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token
       },
       success: (res) => {
         if (res.data.code === 200) {
+          const address = res.data.data;
           this.setData({
-            address: res.data.data
+            address: {
+              name: address.name,
+              phone: address.phone,
+              detail: address.detail
+            }
           });
         }
       },

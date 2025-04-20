@@ -200,8 +200,8 @@ Page({
           // 通知首页更新购物车数据
           app.eventBus.emit('cartUpdated', []);
 
-          // 请求后端更新数据
-          this.syncCartDataToServer(null);
+          // 清空购物车数据
+          this.syncClearCartData();
         }
       }
     });
@@ -220,15 +220,19 @@ Page({
       },
       success: (res) => {
         if (res.data.code === 200) {
-          const cartItems = res.data.data;
-          if (!Array.isArray(cartItems)) {
-            console.error('fetchCartDataFromServer: cartItems 不是数组', cartItems);
+          const serverCartItems = res.data.data;
+          if (!Array.isArray(serverCartItems)) {
+            console.error('fetchCartDataFromServer: cartItems 不是数组', serverCartItems);
             return;
           }
-          // 同步到全局数据
-          app.globalData.cartItems = cartItems;
-          this.setData({ cartItems });
-          this.calculateTotal(cartItems);
+
+          // 直接使用服务器购物车数据
+          app.globalData.cartItems = serverCartItems;
+          this.setData({ cartItems: serverCartItems });
+          this.calculateTotal(serverCartItems);
+
+          // 更新购物车徽标
+          this.updateCartBadge();
         }
       },
       fail: (err) => {
@@ -262,11 +266,67 @@ Page({
     });
   },
 
+    /**
+   * 清空购物车数据到后端
+   */
+  syncClearCartData() {
+    const app = getApp();
+    dd.httpRequest({
+      url: `${app.globalData.baseUrl}/cart/clearCartItemByMobile`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + app.globalData.token
+      },
+      success: (res) => {
+        if (res.data.code !== 200) {
+          console.error("同步购物车数据失败:", res.data);
+        }
+      },
+      fail: (err) => {
+        console.error("同步购物车数据失败:", err);
+      }
+    });
+  },
+
   /**
    * 跳转到结账单页面
    */
   goToCheckout() {
     const app = getApp();
+
+    // 检查购物车是否为空
+    if (this.data.cartItems.length === 0) {
+      dd.alert({
+        title: '提示',
+        content: '购物车是空的，请先添加商品再结算',
+        buttonText: '确定',
+        success: () => {
+          // 跳转到"我的"页面
+          dd.switchTab({
+            url: '/pages/index/index'
+          });
+        }
+      });
+      return;
+    }
+
+    // 检查用户是否已登录
+    if (!app.globalData.isAuthorized) {
+      dd.alert({
+        title: '提示',
+        content: '您需要登录后才能结算，请先登录',
+        buttonText: '确定',
+        success: () => {
+          // 跳转到"我的"页面
+          dd.switchTab({
+            url: '/pages/user/user'
+          });
+        }
+      });
+      return;
+    }
+
     const cartItems = app.globalData.cartItems;
 
     // 检查购物车是否为空
