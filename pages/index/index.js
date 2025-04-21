@@ -85,8 +85,8 @@ Page({
       fail: (err) => {
         dd.showToast({ 
           title: '加载失败', 
-          icon: 'none',
-          content: err.errMsg || '网络错误'
+          icon: 'fail',
+          content: "code:" + err.error + "，mge:" + err.errorMessage
         });
       },
       complete: () => {
