@@ -1,0 +1,55 @@
+<view class="container">
+  <!-- 订单状态栏 -->
+  <view class="status-card">
+    <text class="status-text">{{orderStatusMap[orderDetail.status]}}</text>
+    <text class="time-text">创建时间：{{orderDetail.createTime}}</text>
+  </view>
+
+  <!-- 收货地址 -->
+  <view class="card address-card" a:if="{{orderDetail.address}}">
+    <view class="flex-row">
+      <text class="iconfont icon-dizhi"></text>
+      <view class="address-info">
+        <text class="name-phone">{{orderDetail.address.name}} {{orderDetail.address.phone}}</text>
+        <text class="detail-address">{{orderDetail.address.detail}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品列表 -->
+  <scroll-view scroll-y class="goods-scroll">
+    <view class="card goods-card" a:for="{{orderDetail.goodsList}}" a:key="id">
+      <image class="goods-image" src="{{item.imageUrl}}" mode="aspectFill" />
+      <view class="goods-info">
+        <text class="goods-title">{{item.goodsName}}</text>
+        <view class="price-row">
+          <text class="goods-price">¥{{item.price}}</text>
+          <text class="goods-count">x{{item.quantity}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 价格汇总 -->
+  <view class="card price-card">
+    <view class="price-item">
+      <text>商品总价</text>
+      <text>¥{{orderDetail.totalPrice}}</text>
+    </view>
+    <view class="price-item">
+      <text>运费</text>
+      <text>¥{{orderDetail.shippingFee || 0}}</text>
+    </view>
+    <view class="divider"></view>
+    <view class="total-price">
+      <text>实付金额</text>
+      <text class="money">¥{{orderDetail.actualPayment}}</text>
+    </view>
+  </view>
+
+  <!-- 订单号 -->
+  <view class="card order-info">
+    <text class="order-number">订单编号：{{orderDetail.orderNumber}}</text>
+    <text a:if="{{orderDetail.deliveryTime}}">发货时间：{{orderDetail.deliveryTime}}</text>
+  </view>
+</view>

@@ -1,0 +1,135 @@
+/* 容器样式 */
+.container {
+  padding: 20rpx;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 通用卡片样式 */
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+}
+
+/* 状态卡片 */
+.status-card {
+  background: #1989fa;
+  color: #fff;
+  padding: 32rpx;
+  border-radius: 16rpx;
+}
+.status-text {
+  font-size: 36rpx;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 16rpx;
+}
+.time-text {
+  font-size: 26rpx;
+  opacity: 0.9;
+}
+
+/* 地址卡片 */
+.address-card {
+  position: relative;
+}
+.icon-dizhi {
+  font-size: 40rpx;
+  color: #666;
+  margin-right: 20rpx;
+}
+.address-info {
+  flex: 1;
+}
+.name-phone {
+  font-size: 30rpx;
+  color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+}
+.detail-address {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 商品卡片 */
+.goods-card {
+  display: flex;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #eee;
+}
+.goods-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+  margin-right: 24rpx;
+}
+.goods-info {
+  flex: 1;
+}
+.goods-title {
+  font-size: 28rpx;
+  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20rpx;
+}
+.goods-price {
+  color: #f44;
+  font-size: 30rpx;
+}
+.goods-count {
+  color: #666;
+  font-size: 26rpx;
+}
+
+/* 价格汇总 */
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+.divider {
+  height: 1rpx;
+  background: #eee;
+  margin: 24rpx 0;
+}
+.total-price {
+  display: flex;
+  justify-content: space-between;
+  font-size: 32rpx;
+}
+.money {
+  color: #f44;
+  font-weight: 500;
+}
+
+/* 订单信息 */
+.order-info text {
+  display: block;
+  font-size: 26rpx;
+  color: #999;
+  line-height: 1.6;
+}
+.order-number {
+  margin-bottom: 12rpx;
+}
+
+/* 状态颜色 */
+.status-card[status="0"] { background: #ff976a; } /* 待付款 */
+.status-card[status="1"] { background: #1989fa; } /* 已付款 */
+.status-card[status="2"] { background: #07c160; } /* 已发货 */
+.status-card[status="3"] { background: #909399; } /* 已完成 */
+.status-card[status="4"] { background: #909399; } /* 已取消 */

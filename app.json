@@ -4,7 +4,8 @@
     "pages/cart/cart",
     "pages/user/user",
     "pages/checkout/checkout",
-    "pages/address/address"
+    "pages/address/address",
+    "pages/orderDetail/orderDetail"
   ],
   "tabBar": {
     "textColor": "#999999",

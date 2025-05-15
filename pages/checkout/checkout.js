@@ -109,16 +109,12 @@ Page({
           this.setData({ cartItems: [], totalPrice: 0 });
           // 通知购物车页面更新数据
           app.eventBus.emit('cartUpdated', []);
-          // 用户退出登录后同步购物车数据
-          const cartPage = getCurrentPages().find(page => page.route === 'pages/cart/cart');
-          if (cartPage) {
-            cartPage.syncCartData();
-          }
+
           // 更新购物车徽标
           this.updateCartBadge();
 
-          dd.switchTab({
-            url: '/pages/cart/cart'
+          dd.redirectTo({
+            url: '/pages/orderDetail/orderDetail?orderNumber=' + res.data.data
           });
         } else {
           dd.showToast({
@@ -139,5 +135,23 @@ Page({
         this.setData({ submitting: false });
       }
     });
-  }
+  },
+  /**
+   * 更新购物车徽标
+   */
+  updateCartBadge() {
+    const app = getApp();
+    const total = app.globalData.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    console.log("更新徽标", total);
+    if (total > 0) {
+      dd.setTabBarBadge({
+        index: 1, // 假设购物车是第二个tab（索引从0开始）
+        text: `${total}`
+      });
+    } else {
+      dd.removeTabBarBadge({
+        index: 1
+      });
+    }
+  },
 });

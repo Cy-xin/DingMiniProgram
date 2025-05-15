@@ -221,7 +221,7 @@ Page({
 
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkOrder/getOrderDetail`,
+      url: `${app.globalData.baseUrl}/dingTalkOrder/getOrderInfo`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -340,11 +340,6 @@ Page({
               // 通知购物车页面更新数据
               app.eventBus.emit('cartUpdated', []);
 
-              // 用户退出登录后同步购物车数据
-              const cartPage = getCurrentPages().find(page => page.route === 'pages/cart/cart');
-              if (cartPage) {
-                cartPage.syncCartData();
-              }
               // 更新购物车徽标
               this.updateCartBadge();
             }
