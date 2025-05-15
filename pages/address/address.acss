@@ -1,0 +1,159 @@
+.container {
+  padding: 20px;
+}
+
+.edit-form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-item {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.input, .textarea {
+  width: 90%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.textarea {
+  height: 100px;
+  resize: none;
+}
+
+.location-btn {
+  margin-top: 10px;
+  background: #f5f5f5;
+  color: #666;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+}
+
+.form-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.cancel-btn, .submit-btn {
+  flex: 1;
+  margin: 0 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.submit-btn {
+  background: #1677ff;
+  color: #fff;
+}
+
+/* 按钮点击效果 */
+.cancel-btn:active, .submit-btn:active, .location-btn:active {
+  opacity: 0.8;
+}
+
+/* 地址列表样式 */
+.address-list {
+  margin-top: 20px;
+}
+
+.address-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.address-info {
+  margin-bottom: 12px;
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.label-text {
+  font-size: 14px;
+  color: #595959;
+  margin-right: 8px;
+  font-weight: 500;
+}
+
+.name {
+  font-size: 15px;
+  color: #1f1f1f;
+  font-weight: 600;
+}
+
+.phone {
+  font-size: 14px;
+  color: #1f1f1f;
+}
+
+.detail-row {
+  margin-top: 10px;
+}
+
+.detail-label {
+  font-size: 14px;
+  color: #595959;
+  font-weight: 500;
+}
+
+.detail {
+  font-size: 13px;
+  color: #8c8c8c;
+  line-height: 1.5;
+}
+
+.address-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.edit-btn, .delete-btn {
+  width: 64px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.edit-btn {
+  background: #1677ff;
+  color: #fff;
+}
+
+.delete-btn {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.edit-btn:active, .delete-btn:active {
+  opacity: 0.8;
+}

@@ -1,0 +1,23 @@
+<view class="container">
+  <!-- 地址编辑表单 -->
+  <view a:if="{{editMode}}" class="edit-form">
+    <form onSubmit="saveAddress">
+      <view class="form-item">
+        <text class="label">收货人</text>
+        <input class="input" value="{{editAddress.name}}" onInput="onNameInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">手机号</text>
+        <input class="input" value="{{editAddress.phone}}" onInput="onPhoneInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">详细地址</text>
+        <textarea class="textarea" value="{{editAddress.detail}}" onInput="onDetailInput" />
+      </view>
+      <view class="form-btns">
+        <button class="cancel-btn" onTap="cancelEdit">取消</button>
+        <button class="submit-btn" formType="submit">保存</button>
+      </view>
+    </form>
+  </view>
+</view>

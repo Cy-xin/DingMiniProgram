@@ -131,13 +131,11 @@ Page({
                 type: 'success'
               });
 
-              // 登录成功获取用户订单信息
-              if (that.data.isAuthorized) {
+              // 登录成功获取用户订单信息，加载购物车数据
+              if (that.data.isAuthorized && app.globalData.token != null) {
                 that.getUserOrderDetail();
+                that.fetchCartDataFromServer();
               }
-
-              // 用户登录后加载购物车数据
-              that.fetchCartDataFromServer();
             },
             fail: (err) => {
               console.error('保存用户信息失败:', err);
@@ -154,7 +152,7 @@ Page({
       fail(err) {
         console.error("网络请求失败:", err);
         dd.showToast({
-          content: '网络请求失败',
+          content: '网络请求失败' + err,
           type: 'fail'
         });
       }
@@ -219,7 +217,7 @@ Page({
   getUserOrderDetail() {
     const that = this;
     const mobile = this.data.userInfo.mobile;
-    console.log('开始获取用户订单信息......', mobile);
+    //console.log('开始获取用户订单信息......', mobile);
 
     const app = getApp();
     dd.httpRequest({
@@ -310,6 +308,7 @@ Page({
    * 处理退出登录
    */
   handleLogout() {
+    const that = this;
     const app = getApp();
     dd.confirm({
       title: '提示',
@@ -346,6 +345,8 @@ Page({
               if (cartPage) {
                 cartPage.syncCartData();
               }
+              // 更新购物车徽标
+              this.updateCartBadge();
             }
           });
         }

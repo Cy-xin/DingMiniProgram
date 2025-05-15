@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/cart/cart",
     "pages/user/user",
-    "pages/checkout/checkout"
+    "pages/checkout/checkout",
+    "pages/address/address"
   ],
   "tabBar": {
     "textColor": "#999999",

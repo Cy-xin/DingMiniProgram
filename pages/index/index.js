@@ -41,7 +41,12 @@ Page({
   },
 
   onShow() {
+    console.log("页面显示onShow");
     const app = getApp();
+
+    // 保存正确的 this 上下文
+    const that = this;
+
     // 监听购物车更新事件
     app.eventBus.on('cartUpdated', (cartItems) => {
       // 更新 quantities
@@ -51,11 +56,15 @@ Page({
       });
       
       // 同时更新 cartItems 和 quantities
-      this.setData({ 
+      that.setData({ 
         cartItems,
         quantities
       });
     });
+
+    // 这里打印的是当前 data 中的值（还未更新）
+    console.log("当前 cartItems", this.data.cartItems);
+    console.log("当前 quantities", this.data.quantities);
   },
 
   /**

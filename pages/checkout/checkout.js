@@ -21,13 +21,18 @@ Page({
     this.fetchUserAddress();
   },
 
+  onShow() {
+    console.log("显示页面......")
+    this.fetchUserAddress();
+  },
+
   /**
    * 获取用户收货地址
    */
   fetchUserAddress() {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkOrder/getAddress`,
+      url: `${app.globalData.baseUrl}/dingTalkAddress/getAddress`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token
@@ -35,18 +40,26 @@ Page({
       success: (res) => {
         if (res.data.code === 200) {
           const address = res.data.data;
-          this.setData({
-            address: {
-              name: address.name,
-              phone: address.phone,
-              detail: address.detail
-            }
-          });
+          if (address != null) {
+            this.setData({
+              address: {
+                name: address.name,
+                phone: address.phone,
+                detail: address.detail
+              }
+            });
+          }
         }
       },
       fail: (err) => {
         console.error("获取收货地址失败:", err);
       }
+    });
+  },
+
+  editAddress() {
+    dd.navigateTo({
+      url: '/pages/address/address'
     });
   },
 
@@ -57,8 +70,22 @@ Page({
     const app = getApp();
     const { cartItems, totalPrice, address } = this.data;
 
+    // 1. 校验数据
+    if (!cartItems || cartItems.length === 0) {
+      dd.showToast({ content: '购物车为空', icon: 'none' });
+      return;
+    }
+    if (!address) {
+      dd.showToast({ content: '请先填写收货地址', icon: 'none' });
+      return;
+    }
+
+    // 2. 防止重复提交（可选，需配合按钮 loading 状态）
+    if (this.data.submitting) return;
+    this.setData({ submitting: true });
+
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/order/create`,
+      url: `${app.globalData.baseUrl}/dingTalkOrder/createOrder`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,18 +97,32 @@ Page({
         address
       }),
       success: (res) => {
+        console.log("创建订单成功信息：", res);
         if (res.data.code === 200) {
           dd.showToast({
-            title: '订单提交成功',
+            content: '订单提交成功',
             icon: 'success'
           });
 
           // 清空购物车
           app.globalData.cartItems = [];
-          dd.navigateBack();
+          this.setData({ cartItems: [], totalPrice: 0 });
+          // 通知购物车页面更新数据
+          app.eventBus.emit('cartUpdated', []);
+          // 用户退出登录后同步购物车数据
+          const cartPage = getCurrentPages().find(page => page.route === 'pages/cart/cart');
+          if (cartPage) {
+            cartPage.syncCartData();
+          }
+          // 更新购物车徽标
+          this.updateCartBadge();
+
+          dd.switchTab({
+            url: '/pages/cart/cart'
+          });
         } else {
           dd.showToast({
-            title: '订单提交失败',
+            content: res.data.msg || '订单提交失败',
             icon: 'none'
           });
         }
@@ -89,10 +130,14 @@ Page({
       fail: (err) => {
         console.error("订单提交失败:", err);
         dd.showToast({
-          title: '网络错误，请重试',
+          content: '网络错误，请重试',
           icon: 'none'
         });
+      },
+      complete: () => {
+        // 4. 恢复提交状态
+        this.setData({ submitting: false });
       }
     });
   }
-}); 
+});
