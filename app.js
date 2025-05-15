@@ -28,6 +28,22 @@ App({
    * @returns 无返回值。
    */
   onLaunch() {
-    // 初始化逻辑
+    try {
+      const userInfo = dd.getStorageSync({
+        key: 'userInfo',
+        success: function (res) {
+          if (res.data) {
+            this.globalData.userInfo = res.data;
+            this.globalData.token = res.data.token; // 从缓存中恢复token
+            this.globalData.isAuthorized = true;
+          }
+        },
+        fail: function (err) {
+          console.log(err);
+        }
+      });
+    } catch (e) {
+      console.error('读取本地缓存失败:', e);
+    }
   }
 });

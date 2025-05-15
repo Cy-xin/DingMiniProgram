@@ -382,10 +382,10 @@ Page({
     });
   },
 
-  // 导航到余额明细页面
+  /**  导航到余额明细页面
   navigateToBalance() {
     dd.navigateTo({
       url: '/pages/balance/balance'
     });
-  }
+  }*/
 });

@@ -1,0 +1,37 @@
+.container {
+  padding: 16rpx;
+  background-color: #f5f5f5;
+}
+
+.points-item {
+  margin: 24rpx 0;
+  padding: 32rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  margin: 12rpx 0;
+  font-size: 28rpx;
+}
+
+.label {
+  color: #666;
+  margin-right: 16rpx;
+}
+
+.value {
+  color: #222;
+  font-weight: 500;
+  /* 关键信息（订单号/积分）突出显示 */
+}
+
+.list-empty {
+  padding: 40rpx;
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+}
