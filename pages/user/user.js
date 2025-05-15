@@ -192,24 +192,24 @@ Page({
     });
   },
 
-    /**
-   * 更新购物车徽标
-   */
-    updateCartBadge() {
-      const app = getApp();
-      const total = app.globalData.cartItems.reduce((sum, item) => sum + item.quantity, 0);
-      console.log("更新徽标", total);
-      if (total > 0) {
-        dd.setTabBarBadge({
-          index: 1, // 假设购物车是第二个tab（索引从0开始）
-          text: `${total}`
-        });
-      } else {
-        dd.removeTabBarBadge({
-          index: 1
-        });
-      }
-    },
+  /**
+ * 更新购物车徽标
+ */
+  updateCartBadge() {
+    const app = getApp();
+    const total = app.globalData.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    console.log("更新徽标", total);
+    if (total > 0) {
+      dd.setTabBarBadge({
+        index: 1, // 假设购物车是第二个tab（索引从0开始）
+        text: `${total}`
+      });
+    } else {
+      dd.removeTabBarBadge({
+        index: 1
+      });
+    }
+  },
 
   /**
    * 获取用户积分、订单数量、余额等信息
@@ -352,17 +352,33 @@ Page({
     });
   },
 
-  // 导航到订单页面
+  /** 
+   * 跳转到订单列表页面
+   */
   navigateToOrders() {
     dd.navigateTo({
-      url: '/pages/orders/orders'
+      url: '/pages/order/list',
+      success: () => {},
+      fail: (err) => {
+        dd.showToast({
+          content: '跳转订单列表失败：' + (err.errorMessage || '未知错误'),
+          type: 'fail'
+        });
+      }
     });
   },
 
   // 导航到积分明细页面
   navigateToPoints() {
     dd.navigateTo({
-      url: '/pages/points/points'
+      url: '/pages/points/points',
+      success: () => {},
+      fail: (err) => {
+        dd.showToast({
+          content: '跳转积分列表失败：' + (err.errorMessage || '未知错误'),
+          type: 'fail'
+        });
+      }
     });
   },
 

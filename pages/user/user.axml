@@ -29,7 +29,7 @@
   </view>
 
   <view class="user-stats" a:if="{{isAuthorized}}">
-    <view class="stat-item">
+    <view class="stat-item" onTap="navigateToPoints">
       <view class="stat-icon points-icon">
         <image src="/assets/icons/points.png" mode="aspectFit"/>
       </view>
@@ -38,7 +38,7 @@
         <text class="stat-label">积分</text>
       </view>
     </view>
-    <view class="stat-item">
+    <view class="stat-item" onTap="navigateToOrders">
       <view class="stat-icon order-icon">
         <image src="/assets/icons/order.png" mode="aspectFit"/>
       </view>
