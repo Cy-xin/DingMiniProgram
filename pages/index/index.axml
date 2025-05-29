@@ -34,7 +34,10 @@
           <view class="product-item">
             <image class="product-image" src="{{item.image}}" mode="aspectFill" onTap="previewImage" data-src="{{item.image}}" />
             <view class="product-info">
-              <text class="product-name">{{item.name}}</text>
+              <view class="text-info">
+                <text class="product-name text-ellipsis">{{item.name}}</text>
+                <text class="product-description text-ellipsis">{{item.description}}</text>
+              </view>
               <view class="price-row">
                 <text class="product-price">¥{{item.price.toFixed(2)}}</text>
               </view>
@@ -52,7 +55,7 @@
 
   <!-- 购物车按钮（固定定位） -->
   <view class="cart-button-wrapper">
-    <button class="cart-button">
+    <button class="cart-button" onTap="navigateToCart">
       <image src="/assets/tabbar/icons-active/cart-active.png" class="cart-icon" />
       <text class="cart-badge">{{cartItems.length}}</text>
     </button>

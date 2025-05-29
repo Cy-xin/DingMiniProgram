@@ -152,7 +152,7 @@ Page({
       fail(err) {
         console.error("网络请求失败:", err);
         dd.showToast({
-          content: '网络请求失败' + err,
+          content: err,
           type: 'fail'
         });
       }

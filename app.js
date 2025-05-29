@@ -5,10 +5,11 @@ App({
     userInfo: null,      // 用户信息
     token: null,         // 用户 token
     cartItems: [],       // 购物车数据
-    //baseUrl: "https://www.jxtjxx1949.cn" // 统一请求 URL 前缀
-    baseUrl: "http://127.0.0.1:8081"
+    baseUrl: "https://www.jxtjxx1949.cn" // 统一请求 URL 前缀
+    //baseUrl: "http://127.0.0.1:8081"
   },
 
+  
   eventBus: {
     events: {},
     on(event, callback) {

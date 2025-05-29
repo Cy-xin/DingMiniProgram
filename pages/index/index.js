@@ -353,5 +353,14 @@ Page({
         scrollHeight: mainHeight - bannerHeight - 20 // 减去边距
       });
     });
-  }
+  },
+
+  /**
+   * 跳转到购物车页面
+   */
+  navigateToCart() {
+    dd.switchTab({
+      url: '/pages/cart/cart'
+    });
+  },
 });
