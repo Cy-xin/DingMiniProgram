@@ -83,3 +83,10 @@
   border-top: 2rpx solid #eee;
   margin-top: 32rpx;
 }
+
+.list-empty {
+  padding: 40rpx;
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+}

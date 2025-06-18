@@ -11,6 +11,12 @@ Page({
    */
   onLoad(query) {
     this.loadCartData();
+    const app = getApp();
+    this.cartUpdateHandler = (cartItems) => {
+      this.setData({ cartItems });
+      this.calculateTotal(cartItems);
+    };
+    app.eventBus.on('cartUpdated', this.cartUpdateHandler);
   },
   
   /**
@@ -24,18 +30,14 @@ Page({
    * 显示页面时调用，用于更新购物车商品数量和总价
    */
   onShow() {
-    const app = getApp();
-    const cartItems = app.globalData.cartItems || [];
-    this.calculateTotal(cartItems);
-    this.setData({ cartItems });
+    this.loadCartData();
 
-    // 监听购物车更新事件
+    const app = getApp();
     app.eventBus.on('cartUpdated', (cartItems) => {
       this.setData({ cartItems });
       this.calculateTotal(cartItems);
     });
 
-    // 如果用户已登录，从服务器加载购物车数据
     if (app.globalData.isAuthorized) {
       this.fetchCartDataFromServer();
     }
@@ -46,7 +48,10 @@ Page({
   },
 
   onUnload() {
-    // 页面被关闭
+    const app = getApp();
+    if (this.cartUpdateHandler) {
+      app.eventBus.off('cartUpdated', this.cartUpdateHandler);
+    }
   },
   onTitleClick() {
     // 标题被点击
@@ -85,23 +90,16 @@ Page({
    */
   increaseQuantity(e) {
     const productId = e.currentTarget.dataset.id;
-    const app = getApp();
-    const cartItems = app.globalData.cartItems.map(item => {
+    const cartItems = this.data.cartItems.map(item => {
       if (item.id === productId) {
         return {
-          productId: item.id, // 确保 id 字段被正确传递
           ...item,
           quantity: item.quantity + 1
         };
       }
       return item;
     });
-    this.updateCart(cartItems);
-
-    // 如果用户已登录，同步购物车数据到后端
-    if (app.globalData.isAuthorized) {
-      this.syncCartDataToServer(cartItems);
-    }
+    this.updateCartAndSync(cartItems);
   },
 
   /**
@@ -111,26 +109,41 @@ Page({
    */
   decreaseQuantity(e) {
     const productId = e.currentTarget.dataset.id;
-    const app = getApp();
-    let cartItems = app.globalData.cartItems.map(item => {
+    console.log('currentTarget:', e.currentTarget);
+    console.log('target:', e.target);
+    console.log('减去的id：', productId);
+
+
+    let cartItems = this.data.cartItems.map(item => {
       if (item.id === productId) {
         const newQty = item.quantity - 1;
-        return newQty > 0 ? {
-          productId: item.id, // 确保 id 字段被正确传递
-          ...item,
-          quantity: newQty
-        } : null;
+        if (newQty > 0) {
+          return {
+            ...item,
+            quantity: newQty
+          };
+        } else {
+          return null;
+        }
       }
       return item;
     }).filter(Boolean);
+    this.updateCartAndSync(cartItems);
+  },
+
+  /**
+   * 统一更新购物车数据，更新视图，更新全局数据，调用后端同步并发送事件
+   */
+  updateCartAndSync(cartItems) {
     this.updateCart(cartItems);
 
-    // 如果用户已登录，同步购物车数据到后端
+    const app = getApp();
+    app.globalData.cartItems = cartItems;
+
     if (app.globalData.isAuthorized) {
       this.syncCartDataToServer(cartItems);
     }
 
-    // 通知首页更新购物车数据
     app.eventBus.emit('cartUpdated', cartItems);
   },
 
@@ -327,7 +340,7 @@ Page({
       return;
     }
 
-    const cartItems = app.globalData.cartItems;
+    const cartItems = this.data.cartItems;
 
     // 检查购物车是否为空
     if (cartItems.length === 0) {

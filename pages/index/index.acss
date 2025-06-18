@@ -301,3 +301,23 @@
   -webkit-box-orient: vertical;
   word-break: break-all;
 }
+
+.refresh-btn {
+  position: fixed;
+  right: 30rpx;
+  bottom: 120rpx; /* 避免被tabbar遮挡 */
+  width: 80rpx;
+  height: 80rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.refresh-icon {
+  width: 48rpx;
+  height: 48rpx;
+}

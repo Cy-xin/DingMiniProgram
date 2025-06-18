@@ -1,4 +1,7 @@
 <view class="order-list-container">
+  <view class="list-empty" a:if="{{!orderList.length}}">
+    暂无积分明细记录
+  </view>
   <block a:for="{{orderList}}" a:key="id">
     <view class="order-item">
       <view class="order-info">

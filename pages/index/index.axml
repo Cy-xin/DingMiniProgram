@@ -53,13 +53,17 @@
     </scroll-view>
   </view>
 
-  <!-- 购物车按钮（固定定位） -->
+  <!-- 购物车按钮（固定定位）
   <view class="cart-button-wrapper">
     <button class="cart-button" onTap="navigateToCart">
       <image src="/assets/tabbar/icons-active/cart-active.png" class="cart-icon" />
       <text class="cart-badge">{{cartItems.length}}</text>
     </button>
   </view>
-
+ -->
+   <!-- 右下角刷新按钮 -->
+   <view class="refresh-btn" a:show="{{showRefreshBtn}}" onTap="handleRefresh">
+    <image src="/assets/icons/refresh.png" class="refresh-icon" mode="aspectFit"/>
+  </view>
   <custom-tabbar />
 </view>

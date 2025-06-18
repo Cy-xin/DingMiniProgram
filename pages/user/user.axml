@@ -1,4 +1,5 @@
 <view class="page-container">
+  <!-- 授权或用户信息区域 -->
   <view class="user-info-section">
     <block a:if="{{!isAuthorized}}">
       <view class="auth-section">
@@ -28,6 +29,7 @@
     </block>
   </view>
 
+  <!-- 统计栏区域 -->
   <view class="user-stats" a:if="{{isAuthorized}}">
     <view class="stat-item" onTap="navigateToPoints">
       <view class="stat-icon points-icon">
@@ -47,18 +49,9 @@
         <text class="stat-label">订单</text>
       </view>
     </view>
-    <!--
-    <view class="stat-item">
-      <view class="stat-icon balance-icon">
-        <image src="/assets/icons/balance.png" mode="aspectFit"/>
-      </view>
-      <view class="stat-info">
-        <text class="stat-value">{{balance || 0}}</text>
-        <text class="stat-label">余额</text>
-      </view>
-    </view>-->
   </view>
 
+  <!-- 功能列表区域 -->
   <view class="function-list" a:if="{{isAuthorized}}">
     <view class="function-group">
       <view class="function-item" onTap="navigateToOrders">
@@ -81,23 +74,14 @@
           <image class="arrow-icon" src="/assets/icons/arrow-right.png" mode="aspectFit"/>
         </view>
       </view>
-      <!--
-      <view class="function-item" onTap="navigateToBalance">
-        <view class="function-left">
-          <image class="function-icon" src="/assets/icons/balance.png" mode="aspectFit"/>
-          <text class="function-text">余额明细</text>
-        </view>
-        <view class="function-right">
-          <text class="function-desc">查看余额记录</text>
-          <image class="arrow-icon" src="/assets/icons/arrow-right.png" mode="aspectFit"/>
-        </view>
-      </view>-->
     </view>
   </view>
 
+  <!-- 退出登录按钮 -->
   <view class="logout-section" a:if="{{isAuthorized}}">
     <button class="logout-btn" onTap="handleLogout">退出登录</button>
   </view>
 
+  <!-- 自定义底部导航栏 -->
   <custom-tabbar />
 </view>

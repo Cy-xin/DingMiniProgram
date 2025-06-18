@@ -1,6 +1,5 @@
-<!-- pages/home/index.axml -->
 <view class="container">
-
+  <!-- 购物车列表区域 -->
   <scroll-view scroll-y class="cart-list">
     <view class="multi-row-grid">
       <block a:for="{{cartItems}}" a:key="id">
@@ -12,9 +11,17 @@
               <view class="price-section">
                 <text class="price-text">¥{{item.price.toFixed(2)}}</text>
                 <view class="quantity-picker">
-                  <text class="btn-quantity" onTap="decreaseQuantity" data-id="{{item.id}}">-</text>
+                  <text 
+                    class="btn-quantity" 
+                    onTap="decreaseQuantity" 
+                    data-id="{{item.id}}"
+                  >-</text>
                   <text class="quantity-value">{{item.quantity}}</text>
-                  <text class="btn-quantity" onTap="increaseQuantity" data-id="{{item.id}}">+</text>
+                  <text 
+                    class="btn-quantity" 
+                    onTap="increaseQuantity" 
+                    data-id="{{item.id}}"
+                  >+</text>
                 </view>
               </view>
             </view>
@@ -24,6 +31,7 @@
     </view>
   </scroll-view>
 
+  <!-- 底部栏 -->
   <view class="cart-footer">
     <text class="total-price">总价：¥{{totalPrice.toFixed(2)}}</text>
     <view class="footer-buttons">

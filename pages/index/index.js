@@ -38,33 +38,54 @@ Page({
 
     // 获取分类数据
     this.fetchCategories();
+
+    const app = getApp();
+    this.cartUpdatedHandler = (cartItems) => {
+      const quantities = {};
+      cartItems.forEach(item => {
+        quantities[item.id] = item.quantity;
+      });
+      this.setData({
+        cartItems,
+        quantities
+      });
+    };
+    app.eventBus.on('cartUpdated', this.cartUpdatedHandler);
   },
 
   onShow() {
     console.log("页面显示onShow");
     const app = getApp();
 
-    // 保存正确的 this 上下文
-    const that = this;
-
-    // 监听购物车更新事件
-    app.eventBus.on('cartUpdated', (cartItems) => {
-      // 更新 quantities
-      const quantities = {};
-      cartItems.forEach(item => {
-        quantities[item.id] = item.quantity;
-      });
-      
-      // 同时更新 cartItems 和 quantities
-      that.setData({ 
-        cartItems,
-        quantities
-      });
-    });
-
     // 这里打印的是当前 data 中的值（还未更新）
     console.log("当前 cartItems", this.data.cartItems);
     console.log("当前 quantities", this.data.quantities);
+  },
+
+  onUnload() {
+    const app = getApp();
+    if (this.cartUpdatedHandler) {
+      app.eventBus.off('cartUpdated', this.cartUpdatedHandler);
+    }
+  },
+
+  checkLogin(callback) {
+    const app = getApp();
+    if (!app.globalData.isAuthorized) {
+      dd.alert({
+        title: '提示',
+        content: '您需要登录后才能操作，请先登录',
+        buttonText: '确定',
+        success: () => {
+          dd.switchTab({ url: '/pages/user/user' });
+        }
+      });
+      return false;
+    }
+    if (typeof callback === 'function') {
+      callback();
+    }
+    return true;
   },
 
   /**
@@ -154,31 +175,14 @@ Page({
    * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
    */
   increaseQuantity(e) {
-    const app = getApp();
-
-    // 检查用户是否已登录
-    if (!app.globalData.isAuthorized) {
-      dd.alert({
-        title: '提示',
-        content: '您需要登录后才能添加商品到购物车，请先登录',
-        buttonText: '确定',
-        success: () => {
-          // 跳转到"我的"页面
-          dd.switchTab({
-            url: '/pages/user/user'
-          });
-        }
-      });
-      return;
-    }
-
-    const productId = e.currentTarget.dataset.id;
-    const quantities = this.data.quantities;
-    quantities[productId] = (quantities[productId] || 0) + 1;
-    
-    this.updateCart(productId);
-    this.setData({ quantities });
-    this.updateCartBadge();
+    this.checkLogin(() => {
+      const productId = e.currentTarget.dataset.id;
+      const quantities = this.data.quantities;
+      quantities[productId] = (quantities[productId] || 0) + 1;
+      this.setData({ quantities });
+      this.updateCart(productId);
+      this.updateCartBadge();
+    });
   },
 
   /**
@@ -187,32 +191,16 @@ Page({
    * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
    */
   decreaseQuantity(e) {
-    const app = getApp();
-
-    // 检查用户是否已登录
-    if (!app.globalData.isAuthorized) {
-      dd.alert({
-        title: '提示',
-        content: '您需要登录后才能修改购物车，请先登录',
-        buttonText: '确定',
-        success: () => {
-          // 跳转到"我的"页面
-          dd.switchTab({
-            url: '/pages/user/user'
-          });
-        }
-      });
-      return;
-    }
-
-    const productId = e.currentTarget.dataset.id;
-    const quantities = this.data.quantities;
-    if (quantities[productId] > 0) {
-      quantities[productId] -= 1;
-      this.updateCart(productId);
-      this.setData({ quantities });
-      this.updateCartBadge();
-    }
+    this.checkLogin(() => {
+      const productId = e.currentTarget.dataset.id;
+      const quantities = this.data.quantities;
+      if (quantities[productId] > 0) {
+        quantities[productId] -= 1;
+        this.setData({ quantities });
+        this.updateCart(productId);
+        this.updateCartBadge();
+      }
+    });
   },
 
   /**
@@ -282,7 +270,6 @@ Page({
     if (quantity > 0) {
       if (index === -1) {
         cartItems.push({
-          productId: product.id,
           ...product,
           quantity
         });
@@ -363,4 +350,12 @@ Page({
       url: '/pages/cart/cart'
     });
   },
+
+  // 刷新页面数据
+  handleRefresh() {
+    dd.showLoading({ title: '刷新中...' });
+    // 重新加载分类和商品数据
+    this.fetchCategories();
+  },
+
 });
