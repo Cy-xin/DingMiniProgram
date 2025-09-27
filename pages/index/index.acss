@@ -1,260 +1,474 @@
 /* pages/home/index.acss */
+
+/* --- 全局与背景 --- */
 .page-container {
   min-height: 100vh;
-  background: #f8f9fa;
+  /* 核心改动：设置一个多彩的渐变背景，这是玻璃效果的基础 */
+  background: linear-gradient(135deg, #a8e0ff 0%, #8ee2f5 35%, #92d8f8 65%, #a1c4fd 100%);
   display: flex;
   flex-direction: column;
-  padding-bottom: 100rpx;
-  position: relative;
 }
 
-/* 轮播图 */
-.banner-swiper {
-  width: 92%;
-  height: 300rpx;
-  border-radius: 24rpx;
-  overflow: hidden;
-  box-shadow: 0 12rpx 32rpx rgba(0, 0, 0, 0.08);
-  margin: 20rpx auto;
-  background: #fff;
-  position: relative;
-  transform: translateZ(0);
-  z-index: 2;
-}
-
-.banner-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* 主体内容 */
-.main-wrapper {
-  flex: 1;
-  display: flex;
-  min-height: 0;
-  background: #fff;
-  border-radius: 24rpx 24rpx 0 0;
-  margin-top: -20rpx;
-  position: relative;
-  z-index: 1;
-  height: calc(100vh - 340rpx);
-}
-
-/* 分类菜单 */
-.menu-list {
-  width: 200rpx;
-  height: 100%;
-  overflow-y: auto;
-  background: #ffffff;
-  padding: 20rpx 0;
-  border-right: 1rpx solid #ebeef5;
-  border-radius: 16rpx;
-  margin: 10rpx;
-  box-shadow: 4rpx 0 12rpx rgba(0, 0, 0, 0.05);
+/* --- 顶部信息与玻璃化搜索栏 --- */
+.top-header {
+  /* --- Glassmorphism 核心属性 --- */
+  background: rgba(255, 255, 255, 0.25); /* 半透明背景 */
+  backdrop-filter: blur(15px); /* 背景模糊，实现磨砂玻璃感 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18); /* 底部边框模拟玻璃边缘 */
+  
+  padding: 20rpx 30rpx;
   position: sticky;
   top: 0;
-  z-index: 3;
-  -webkit-overflow-scrolling: touch;
+  z-index: 100;
+  transition: all 0.3s;
 }
 
-.menu-item {
-  padding: 24rpx 20rpx;
-  font-size: 26rpx;
-  color: #606266;
-  transition: all 0.3s;
-  position: relative;
+.location-wrapper {
   display: flex;
   align-items: center;
-  line-height: 1.4;
-  margin: 0 10rpx;
-  border-radius: 12rpx;
-  /* 修改以下属性实现自动换行 */
-  white-space: normal; /* 允许文本换行 */
-  overflow: visible; /* 允许内容溢出显示 */
-  text-overflow: clip; /* 移除省略号 */
-  min-height: 80rpx; /* 保持最小高度，避免过矮 */
+  margin-bottom: 20rpx;
 }
 
-.menu-item.active {
-  color: #409eff;
-  background-color: #ecf5ff;
+.location-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 10rpx;
+}
+
+.location-text {
+  font-size: 26rpx;
+  color: #1f2d3d; /* 加深文字颜色以保证清晰度 */
   font-weight: 500;
-  box-shadow: 0 2rpx 8rpx rgba(64, 158, 255, 0.1);
 }
 
-.menu-item::before {
-  content: '';
-  display: inline-block;
-  width: 6rpx;
-  height: 6rpx;
-  background: #c0c4cc;
-  border-radius: 50%;
-  margin-right: 16rpx;
-  transition: all 0.3s;
-  flex-shrink: 0;
-}
-
-.menu-item.active::before {
-  background: #409eff;
-  width: 8rpx;
-  height: 8rpx;
-}
-
-/* 商品列表 */
-.product-scroll {
-  flex: 1;
-  min-width: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 20rpx;
-  height: 100%;
-}
-
-.product-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320rpx, 1fr));
-  gap: 24rpx;
-  padding: 10rpx;
-}
-
-.product-item {
+/* 修改搜索框容器样式 */
+.search-bar-wrapper {
   display: flex;
-  padding: 20rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
-  position: relative;
-  transition: all 0.3s;
+  align-items: center;
+  /* 优化：增加背景透明度和模糊效果，更好地融入玻璃风格 */
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* 优化：调整圆角和高度比例 */
+  border-radius: 40rpx;
+  padding: 0 28rpx;
+  height: 72rpx;
+  /* 优化：增加边框和阴影效果 */
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
-.product-item:active {
-  transform: scale(0.98);
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+/* 搜索框输入样式优化 */
+.search-input {
+  flex: 1;
+  height: 100%;
+  font-size: 28rpx;
+  margin: 0 16rpx;
+  color: #1f2d3d;
+  /* 移除默认样式影响 */
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+/* 优化占位符样式 */
+.search-input::placeholder {
+  color: rgba(31, 45, 61, 0.5);
+  font-size: 26rpx;
+}
+
+/* 添加焦点时的交互效果 */
+.search-bar-wrapper:focus-within {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, 0.08);
+  transform: translateY(-2rpx);
+}
+
+/* 优化搜索图标样式 */
+.search-icon {
+  width: 34rpx;
+  height: 34rpx;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.search-icon, .scan-icon {
+  width: 32rpx;
+  height: 32rpx;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.search-input {
+  flex: 1;
+  height: 100%;
+  font-size: 26rpx;
+  margin: 0 16rpx;
+  color: #1f2d3d;
+}
+
+/* --- 优化的玻璃化横向分类导航 --- */
+.category-tabs-container {
+  display: flex;
+  white-space: nowrap;
+  padding: 20rpx 0 20rpx 20rpx;
+  position: sticky;
+  top: 142rpx;
+  z-index: 99;
+  overflow-x: auto;
+  /* 隐藏滚动条但保留滚动功能 */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  /* --- 增强的Glassmorphism效果 --- */
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, 0.06); /* 增加阴影深度 */
+}
+
+/* 隐藏滚动条 */
+.category-tabs-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- 增强的菜单项样式 --- */
+.category-tab-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 36rpx;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+  color: #3c4858;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* 更平滑的过渡效果 */
+  border-radius: 40rpx;
+  background: rgba(255, 255, 255, 0);
+  min-width: 140rpx;
+  text-align: center;
+}
+
+/* 优化菜单图标显示 */
+.category-tab-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 10rpx;
+  vertical-align: middle;
+}
+
+/* 增加鼠标悬停效果 */
+.category-tab-item:hover {
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateY(-3rpx);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 优化激活状态样式，使其更加醒目 */
+.category-tab-item.active {
+  color: #ffffff;
+  font-weight: 600;
+  background: linear-gradient(135deg, #409eff, #67c23a); /* 渐变背景更醒目 */
+  box-shadow: 0 8rpx 24rpx rgba(64, 158, 255, 0.3); /* 激活状态添加辉光效果 */
+  transform: scale(1.08); /* 轻微放大突出显示 */
+}
+
+/* 移除下划线，使用更好的视觉指示器 */
+.category-tab-item.active::after {
+  display: none;
+}
+
+/* 为激活状态添加装饰元素 */
+.category-tab-item.active::before {
+  content: '';
+  position: absolute;
+  top: 6rpx;
+  right: 6rpx;
+  width: 16rpx;
+  height: 16rpx;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+/* 添加菜单角标，突出热门分类 */
+.category-tab-badge {
+  position: absolute;
+  top: -8rpx;
+  right: 16rpx;
+  background: #f56c6c;
+  color: white;
+  font-size: 20rpx;
+  padding: 2rpx 12rpx;
+  border-radius: 16rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4rpx 8rpx rgba(245, 108, 108, 0.3);
+  z-index: 1;
+}
+
+/* 装饰性渐变遮罩 */
+.category-tabs-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 20rpx;
+  transform: translateY(-50%);
+  width: 20rpx;
+  height: 50rpx;
+  background: linear-gradient(to left, rgba(224, 244, 255, 0.9), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 为了更好的视觉平衡，调整间距 */
+.top-header {
+  margin-bottom: 20rpx;
+}
+
+/* 调整商品列表的顶部边距 */
+.product-list {
+  padding-top: 24rpx;
+}
+
+/* 添加滑动时的动效 */
+.category-tabs-container {
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 菜单项加载动画 */
+.category-tab-item {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 为不同位置的菜单项设置不同的动画延迟，创建级联效果 */
+.category-tab-item:nth-child(1) { animation-delay: 0s; }
+.category-tab-item:nth-child(2) { animation-delay: 0.05s; }
+.category-tab-item:nth-child(3) { animation-delay: 0.1s; }
+.category-tab-item:nth-child(4) { animation-delay: 0.15s; }
+.category-tab-item:nth-child(5) { animation-delay: 0.2s; }
+.category-tab-item:nth-child(6) { animation-delay: 0.25s; }
+
+.category-tab-item {
+  display: inline-block;
+  padding: 18rpx 32rpx;
+  margin-right: 16rpx;
+  font-size: 28rpx;
+  color: #3c4858;
+  position: relative;
+  transition: all 0.3s ease;
+  border-radius: 32rpx;
+  /* 鼠标悬停时的背景效果 */
+  background: rgba(255, 255, 255, 0);
+}
+
+/* 增加鼠标悬停效果 */
+.category-tab-item:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2rpx);
+}
+
+.category-tab-item.active {
+  color: #409eff;
+  font-weight: 600;
+  background: rgba(64, 158, 255, 0.1);
+  /* 增加激活状态的缩放效果 */
+  transform: scale(1.05);
+}
+
+/* 优化选中指示器，使其更加醒目 */
+.category-tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 8rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 8rpx;
+  background: linear-gradient(90deg, #409eff, #67c23a); /* 使用渐变色增强视觉效果 */
+  border-radius: 4rpx;
+  box-shadow: 0 4rpx 12rpx rgba(64, 158, 255, 0.4); /* 添加辉光效果 */
+  animation: pulse 2s infinite;
+}
+
+/* 添加呼吸动画增强视觉吸引力 */
+@keyframes pulse {
+  0% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 4rpx 12rpx rgba(64, 158, 255, 0.4);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 6rpx 16rpx rgba(64, 158, 255, 0.6);
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 4rpx 12rpx rgba(64, 158, 255, 0.4);
+  }
+}
+
+/* 添加装饰性元素，增加菜单的精致感 */
+.category-tabs-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 20rpx;
+  transform: translateY(-50%);
+  width: 20rpx;
+  height: 50rpx;
+  /* 渐变遮罩，使滚动菜单右侧有渐隐效果 */
+  background: linear-gradient(to left, rgba(224, 244, 255, 0.9), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 为了更好的视觉平衡，调整顶部栏和菜单的间距 */
+.top-header {
+  margin-bottom: 16rpx;
+}
+
+/* 调整商品列表的顶部边距，与优化后的菜单更好地配合 */
+.product-list {
+  padding-top: 20rpx;
+}
+
+/* --- 全新玻璃化商品卡片 --- */
+.product-item {
+  margin-bottom: 10px;
+  display: flex;
+  padding: 24rpx;
+  border-radius: 24rpx; /* 圆角更大，更柔和 */
+  overflow: hidden;
+  transition: all 0.3s ease;
+  
+  /* --- Glassmorphism 核心属性 --- */
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 32rpx 0 rgba(31, 38, 135, 0.1); /* 调整为更柔和的阴影 */
 }
 
 .product-image {
-  width: 150rpx;
-  height: 150rpx;
+  width: 180rpx;
+  height: 180rpx;
   flex-shrink: 0;
-  object-fit: cover;
-  border-radius: 12rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  border-radius: 16rpx;
+  margin-right: 24rpx;
 }
 
 .product-info {
   flex: 1;
-  padding: 0 16rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.text-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
+  min-width: 0;
 }
 
 .product-name {
-  font-size: 28rpx;
-  color: #303133;
-  line-height: 1.4;
+  font-size: 30rpx;
   font-weight: 500;
+  color: #111; /* 主要文字确保最深，保证可读性 */
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 8rpx;
 }
 
 .product-description {
   font-size: 24rpx;
-  color: #909399;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  color: #555; /* 次要文字颜色 */
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 8rpx;
 }
 
-.price-row {
+.product-tags .tag {
+  font-size: 20rpx;
+  color: #ff9900;
+  background: rgba(255, 153, 0, 0.1); /* 半透明背景 */
+  border: 1px solid rgba(255, 153, 0, 0.2);
+  padding: 4rpx 10rpx;
+  border-radius: 6rpx;
+}
+
+.price-and-action {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin: 12rpx 0;
+  align-items: flex-end;
+  margin-top: 16rpx;
 }
 
 .product-price {
-  color: #f56c6c;
-  font-size: 25rpx;
+  font-size: 34rpx;
   font-weight: bold;
-}
-
-.product-stock {
-  font-size: 24rpx;
   color: #f56c6c;
 }
 
+/* --- 数量控制器样式优化 --- */
 .quantity-control {
   display: flex;
   align-items: center;
-  position: absolute;
-  bottom: 20rpx;
-  right: 20rpx;
-  padding: 8rpx;
-  background: #f5f7fa;
-  border-radius: 32rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.quantity-button {
-  width: 44rpx;
-  height: 44rpx;
-  border-radius: 50%;
-  background: #fff;
-  color: #409eff;
-  font-weight: bold;
-  font-size: 28rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2rpx 6rpx rgba(64, 158, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 24rpx;
 }
 
 .quantity-display {
-  min-width: 48rpx;
-  text-align: center;
-  font-size: 26rpx;
-  color: #303133;
+  font-size: 28rpx;
   font-weight: 500;
+  color: #111;
+  margin: 0 20rpx;
 }
 
-/* 空状态 */
-.empty-state {
+.quantity-button {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 120rpx 0;
+  font-size: 32rpx;
+  color: #007aff;
+  background: rgba(255, 255, 255, 0.8); /* 按钮使用更亮的背景突出交互 */
+  transition: all 0.2s;
 }
 
-.empty-icon {
-  width: 200rpx;
-  height: 200rpx;
-  margin-bottom: 32rpx;
-}
-
-.empty-text {
-  font-size: 28rpx;
-  color: #909399;
-}
-
-/* 悬浮按钮组 */
+/* --- 玻璃化悬浮按钮 --- */
 .float-buttons {
   position: fixed;
-  right: 32rpx;
+  right: 30rpx;
   bottom: 180rpx;
   display: flex;
   flex-direction: column;
@@ -262,52 +476,67 @@
   z-index: 100;
 }
 
-.refresh-btn {
-  width: 88rpx;
-  height: 88rpx;
-  background: #fff;
+.float-btn {
+  width: 96rpx;
+  height: 96rpx;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
-}
-
-.refresh-icon {
-  width: 44rpx;
-  height: 44rpx;
-}
-
-.cart-btn {
-  width: 88rpx;
-  height: 88rpx;
-  background: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
   position: relative;
+
+  /* --- Glassmorphism 核心属性 --- */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
 }
 
-.cart-icon {
-  width: 44rpx;
-  height: 44rpx;
+.float-icon {
+  width: 48rpx;
+  height: 48rpx;
 }
 
 .cart-badge {
   position: absolute;
-  top: -6rpx;
-  right: -6rpx;
+  top: 0;
+  right: 0;
   background: #f56c6c;
   color: #fff;
   min-width: 36rpx;
   height: 36rpx;
   border-radius: 18rpx;
-  font-size: 24rpx;
+  font-size: 22rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(245, 108, 108, 0.3);
+  padding: 0 6rpx;
+  border: 3rpx solid #fff; /* 加粗边框使其更突出 */
+}
+
+/* --- 空状态 --- */
+.empty-state {
+  margin-top: 100rpx;
+  padding: 60rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* 空状态也应用玻璃效果 */
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24rpx;
+}
+
+.empty-icon {
+  width: 180rpx;
+  height: 180rpx;
+  margin-bottom: 32rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #333;
 }

@@ -1,6 +1,7 @@
 .container {
   min-height: 100vh;
-  background-color: #f8f9fa;
+    /* 核心改动：设置一个多彩的渐变背景，这是玻璃效果的基础 */
+  background: linear-gradient(135deg, #a8e0ff 0%, #8ee2f5 35%, #92d8f8 65%, #a1c4fd 100%);
   display: flex;
   flex-direction: column;
   padding-bottom: 120rpx;
