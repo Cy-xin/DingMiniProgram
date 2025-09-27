@@ -1,39 +1,62 @@
 <view class="container">
   <!-- 购物车列表区域 -->
-  <scroll-view scroll-y class="cart-list">
-    <view class="multi-row-grid">
-      <block a:for="{{cartItems}}" a:key="id">
-        <view class="vertical-card">
-          <view class="card-content">
-            <image class="product-thumb" src="{{item.image}}" mode="aspectFill" />
-            <view class="product-info">
-              <text class="product-title">{{item.name}}</text>
-              <view class="price-section">
-                <text class="price-text">¥{{item.price.toFixed(2)}}</text>
-                <view class="quantity-picker">
-                  <text 
-                    class="btn-quantity" 
-                    onTap="decreaseQuantity" 
-                    data-id="{{item.id}}"
-                  >-</text>
-                  <text class="quantity-value">{{item.quantity}}</text>
-                  <text 
-                    class="btn-quantity" 
-                    onTap="increaseQuantity" 
-                    data-id="{{item.id}}"
-                  >+</text>
+  <scroll-view 
+    scroll-y 
+    class="cart-list"
+    enable-back-to-top="{{true}}"
+    refresher-enabled="{{true}}"
+    refresher-triggered="{{refreshing}}"
+    onRefresherRefresh="onRefresh"
+  >
+    <block a:if="{{cartItems.length > 0}}">
+      <view class="multi-row-grid">
+        <block a:for="{{cartItems}}" a:key="id">
+          <view class="vertical-card">
+            <view class="card-content">
+              <image 
+                class="product-thumb" 
+                src="{{item.image}}" 
+                mode="aspectFill"
+                onTap="previewImage"
+                data-src="{{item.image}}"
+              />
+              <view class="product-info">
+                <text class="product-title">{{item.name}}</text>
+                <view class="price-section">
+                  <text class="price-text">¥{{item.price.toFixed(2)}}</text>
+                  <view class="quantity-picker">
+                    <text 
+                      class="btn-quantity" 
+                      onTap="decreaseQuantity" 
+                      data-id="{{item.id}}"
+                    >-</text>
+                    <text class="quantity-value">{{item.quantity}}</text>
+                    <text 
+                      class="btn-quantity" 
+                      onTap="increaseQuantity" 
+                      data-id="{{item.id}}"
+                    >+</text>
+                  </view>
                 </view>
               </view>
             </view>
           </view>
-        </view>
-      </block>
+        </block>
+      </view>
+    </block>
+    <view class="empty-state" a:else>
+      <image src="/assets/icons/empty-cart.png" class="empty-icon" />
+      <text class="empty-text">购物车还是空的</text>
+      <button class="go-shopping-btn" onTap="goShopping">去逛逛</button>
     </view>
   </scroll-view>
 
   <!-- 底部栏 -->
-  <view class="cart-footer">
-    <text class="total-price">总价：¥{{totalPrice.toFixed(2)}}</text>
+  <view class="cart-footer" a:if="{{cartItems.length > 0}}">
+    <view class="footer-left">
+      <text class="total-label">合计：</text>
+      <text class="total-price">¥{{totalPrice.toFixed(2)}}</text>
+    </view>
     <view class="footer-buttons">
       <button class="clear-btn" onTap="clearCart">清空</button>
       <button class="checkout-btn" onTap="goToCheckout">去结算</button>

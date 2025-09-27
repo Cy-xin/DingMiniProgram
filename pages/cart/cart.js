@@ -1,7 +1,8 @@
 Page({
   data: {
     cartItems: [],
-    totalPrice: 0
+    totalPrice: 0,
+    refreshing: false
   },
 
   /**
@@ -31,7 +32,6 @@ Page({
    */
   onShow() {
     this.loadCartData();
-
     const app = getApp();
     app.eventBus.on('cartUpdated', (cartItems) => {
       this.setData({ cartItems });
@@ -61,6 +61,17 @@ Page({
   },
   onReachBottom() {
     // 页面被拉到底部
+  },
+  
+  /**
+   * 下拉刷新处理
+   */
+  onRefresh() {
+    this.setData({ refreshing: true });
+    this.fetchCartDataFromServer();
+    setTimeout(() => {
+      this.setData({ refreshing: false });
+    }, 1000);
   },
   
   /**
@@ -183,10 +194,10 @@ Page({
 
     // 检查购物车是否为空
     if (this.data.cartItems.length === 0) {
-      dd.alert({
-        title: '提示',
+      dd.showToast({
+        type: 'none',
         content: '购物车已经是空的了！',
-        buttonText: '确定',
+        duration: 2000
       });
       return;
     }
@@ -215,6 +226,11 @@ Page({
 
           // 清空购物车数据
           this.syncClearCartData();
+          dd.showToast({
+            type: 'success',
+            content: '购物车已清空',
+            duration: 2000
+          });
         }
       }
     });
@@ -250,6 +266,11 @@ Page({
       },
       fail: (err) => {
         console.error("获取购物车数据失败:", err);
+        dd.showToast({
+          type: 'fail',
+          content: '获取购物车数据失败',
+          duration: 2000
+        });
       }
     });
   },
@@ -271,10 +292,20 @@ Page({
       success: (res) => {
         if (res.data.code !== 200) {
           console.error("同步购物车数据失败:", res.data);
+          dd.showToast({
+            type: 'fail',
+            content: '同步购物车数据失败',
+            duration: 2000
+          });
         }
       },
       fail: (err) => {
         console.error("同步购物车数据失败:", err);
+        dd.showToast({
+          type: 'fail',
+          content: '同步购物车数据失败',
+          duration: 2000
+        });
       }
     });
   },
@@ -294,10 +325,20 @@ Page({
       success: (res) => {
         if (res.data.code !== 200) {
           console.error("同步购物车数据失败:", res.data);
+          dd.showToast({
+            type: 'fail',
+            content: '清空购物车数据失败',
+            duration: 2000
+          });
         }
       },
       fail: (err) => {
         console.error("同步购物车数据失败:", err);
+        dd.showToast({
+          type: 'fail',
+          content: '清空购物车数据失败',
+          duration: 2000
+        });
       }
     });
   },
@@ -310,33 +351,26 @@ Page({
 
     // 检查购物车是否为空
     if (this.data.cartItems.length === 0) {
-      dd.alert({
-        title: '提示',
+      dd.showToast({
+        type: 'none',
         content: '购物车是空的，请先添加商品再结算',
-        buttonText: '确定',
-        success: () => {
-          // 跳转到"我的"页面
-          dd.switchTab({
-            url: '/pages/index/index'
-          });
-        }
+        duration: 2000
       });
       return;
     }
 
     // 检查用户是否已登录
     if (!app.globalData.isAuthorized) {
-      dd.alert({
-        title: '提示',
+      dd.showToast({
+        type: 'none',
         content: '您需要登录后才能结算，请先登录',
-        buttonText: '确定',
-        success: () => {
-          // 跳转到"我的"页面
-          dd.switchTab({
-            url: '/pages/user/user'
-          });
-        }
+        duration: 2000
       });
+      setTimeout(() => {
+        dd.switchTab({
+          url: '/pages/user/user'
+        });
+      }, 2000);
       return;
     }
 
@@ -357,4 +391,24 @@ Page({
       url: `/pages/checkout/checkout?cartItems=${encodeURIComponent(JSON.stringify(cartItems))}&totalPrice=${this.data.totalPrice}`
     });
   },
+
+  /**
+   * 预览商品图片
+   */
+  previewImage(e) {
+    const src = e.currentTarget.dataset.src;
+    dd.previewImage({
+      urls: [src],
+      current: src
+    });
+  },
+
+  /**
+   * 跳转到首页
+   */
+  goShopping() {
+    dd.switchTab({
+      url: '/pages/index/index'
+    });
+  }
 });

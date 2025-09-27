@@ -1,69 +1,94 @@
 <!-- pages/home/index.axml -->
 <view class="page-container">
-  <!-- 轮播图（固定高度） -->
-  <swiper class="banner-swiper" autoplay interval="5000" circular indicator-dots="{{true}}">
+  <!-- 轮播图 -->
+  <swiper class="banner-swiper" 
+    autoplay 
+    interval="5000" 
+    circular 
+    indicator-dots="{{true}}"
+    indicator-color="rgba(255, 255, 255, 0.6)"
+    indicator-active-color="#409eff"
+  >
     <block a:for="{{banners}}" a:key="id">
       <swiper-item>
-        <image class="banner-image" src="{{item.image}}" mode="aspectFill" />
+        <image class="banner-image" 
+          src="{{item.image}}" 
+          mode="aspectFill" 
+          onTap="handleBannerClick" 
+          data-item="{{item}}" 
+        />
       </swiper-item>
     </block>
   </swiper>
 
-  <!-- 主体内容（flex布局） -->
+  <!-- 主体内容 -->
   <view class="main-wrapper">
-    <!-- 分类菜单（固定宽度） -->
-    <view class="menu-list">
+    <!-- 分类菜单 -->
+    <scroll-view 
+      scroll-y 
+      class="menu-list"
+      scroll-with-animation="{{true}}"
+      enhanced="{{true}}"
+      show-scrollbar="{{false}}"
+    >
       <block a:for="{{categories}}" a:key="id">
-        <text class="menu-item {{currentCategory.id === item.id ? 'active' : ''}}" 
+        <view class="menu-item {{currentCategory.id === item.id ? 'active' : ''}}" 
           onTap="selectCategory" 
           data-id="{{item.id}}"
-          style="padding: 20rpx 15rpx;font-size:26rpx"
         >
           {{item.name}}
-        </text>
+        </view>
       </block>
-    </view>
+    </scroll-view>
 
-    <!-- 商品列表（滚动区域） -->
+    <!-- 商品列表 -->
     <scroll-view 
       scroll-y 
       class="product-scroll"
+      enable-back-to-top="{{true}}"
+      refresher-enabled="{{true}}"
+      refresher-triggered="{{refreshing}}"
+      onRefresherRefresh="onRefresh"
+      enhanced="{{true}}"
+      show-scrollbar="{{false}}"
     >
       <view class="product-list">
-        <block a:for="{{filteredProducts}}" a:key="id">
-          <view class="product-item">
-            <image class="product-image" src="{{item.image}}" mode="aspectFill" onTap="previewImage" data-src="{{item.image}}" />
-            <view class="product-info">
-              <view class="text-info">
-                <text class="product-name text-ellipsis">{{item.name}}</text>
-                <text class="product-description text-ellipsis">{{item.description}}</text>
-              </view>
-              <view class="price-row">
-                <text class="product-price">¥{{item.price.toFixed(2)}}</text>
-              </view>
-              <view class="quantity-control">
-                <text class="quantity-button" onTap="decreaseQuantity" data-id="{{item.id}}">-</text>
-                <text class="quantity-display">{{quantities[item.id] || 0}}</text>
-                <text class="quantity-button" onTap="increaseQuantity" data-id="{{item.id}}">+</text>
+        <block a:if="{{filteredProducts.length > 0}}">
+          <block a:for="{{filteredProducts}}" a:key="id">
+            <view class="product-item" data-item="{{item}}">
+              <image class="product-image" src="{{item.image}}" mode="aspectFill" onTap="previewImage" data-src="{{item.image}}"/>
+              <view class="product-info">
+                <view class="text-info">
+                  <text class="product-name text-ellipsis">{{item.name}}</text>
+                  <text class="product-description text-ellipsis">{{item.description}}</text>
+                </view>
+                <view class="price-row">
+                  <text class="product-price">¥{{item.price.toFixed(2)}}</text>
+                  <text class="product-stock" a:if="{{item.stock <= 10}}">仅剩{{item.stock}}件</text>
+                </view>
+                <view class="quantity-control" catchTap="stopPropagation">
+                  <text class="quantity-button" onTap="decreaseQuantity" data-id="{{item.id}}">-</text>
+                  <text class="quantity-display">{{quantities[item.id] || 0}}</text>
+                  <text class="quantity-button" onTap="increaseQuantity" data-id="{{item.id}}">+</text>
+                </view>
               </view>
             </view>
-          </view>
+          </block>
         </block>
+        <view class="empty-state" a:else>
+          <image src="/assets/icons/empty.png" class="empty-icon" />
+          <text class="empty-text">暂无商品</text>
+        </view>
       </view>
     </scroll-view>
   </view>
 
-  <!-- 购物车按钮（固定定位）
-  <view class="cart-button-wrapper">
-    <button class="cart-button" onTap="navigateToCart">
-      <image src="/assets/tabbar/icons-active/cart-active.png" class="cart-icon" />
-      <text class="cart-badge">{{cartItems.length}}</text>
-    </button>
+  <!-- 悬浮按钮组 -->
+  <view class="float-buttons">
+    <view class="refresh-btn" onTap="handleRefresh">
+      <image src="/assets/icons/refresh.png" class="refresh-icon" mode="aspectFit"/>
+    </view>
   </view>
- -->
-   <!-- 右下角刷新按钮 -->
-   <view class="refresh-btn" a:show="{{showRefreshBtn}}" onTap="handleRefresh">
-    <image src="/assets/icons/refresh.png" class="refresh-icon" mode="aspectFit"/>
-  </view>
+
   <custom-tabbar />
 </view>

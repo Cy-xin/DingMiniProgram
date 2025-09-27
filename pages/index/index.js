@@ -69,6 +69,11 @@ Page({
     }
   },
 
+  /**
+   * 检查登录状态
+   * @param {Function} callback - 登录成功后的回调函数
+   * @returns {boolean} - 是否已登录
+   */
   checkLogin(callback) {
     const app = getApp();
     if (!app.globalData.isAuthorized) {
@@ -138,8 +143,7 @@ Page({
 
   /**
    * 根据分类ID获取商品列表
-   *
-   * @param categoryId 分类ID
+   * @param {string} categoryId - 分类ID
    */
   fetchProducts(categoryId) {
     dd.showLoading({ title: '加载商品...' });
@@ -171,8 +175,7 @@ Page({
 
   /**
    * 增加商品数量
-   *
-   * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
+   * @param {Object} e - 事件对象
    */
   increaseQuantity(e) {
     this.checkLogin(() => {
@@ -187,8 +190,7 @@ Page({
 
   /**
    * 减少商品数量
-   *
-   * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
+   * @param {Object} e - 事件对象
    */
   decreaseQuantity(e) {
     this.checkLogin(() => {
@@ -200,27 +202,6 @@ Page({
         this.updateCart(productId);
         this.updateCartBadge();
       }
-    });
-  },
-
-  /**
-   * 添加新商品
-   */
-  addNewProduct() {
-    const newProduct = {
-      id: this.data.products.length + 1,
-      name: `商品${this.data.products.length + 1}`,
-      price: Math.floor(Math.random() * 100) + 50,
-      image: '/images/default.jpg',
-      categoryId: this.data.currentCategory.id || 1
-    };
-    this.setData({
-      products: [...this.data.products, newProduct],
-      filteredProducts: [...this.data.filteredProducts, newProduct]
-    });
-    dd.showToast({
-      content: '新商品已添加',
-      duration: 1000
     });
   },
 
@@ -351,11 +332,19 @@ Page({
     });
   },
 
-  // 刷新页面数据
+  /**
+   * 刷新页面数据
+   */
   handleRefresh() {
     dd.showLoading({ title: '刷新中...' });
     // 重新加载分类和商品数据
     this.fetchCategories();
   },
 
+  /**
+   * 阻止事件冒泡
+   */
+  stopPropagation() {
+    return;
+  }
 });
