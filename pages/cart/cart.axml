@@ -62,4 +62,5 @@
       <button class="checkout-btn" onTap="goToCheckout">去结算</button>
     </view>
   </view>
+  <custom-tabbar current="cart"></custom-tabbar>
 </view>
