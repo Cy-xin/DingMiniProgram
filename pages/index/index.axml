@@ -1,16 +1,17 @@
-<view class="page-container">
-  <view class="top-header">
+<template name="index">
+  <view class="page">
+    <view class="top-header">
     <view class="location-wrapper">
       <image src="/assets/icons/location.png" class="location-icon" />
-      <text class="location-text">配送至：嘉兴市特殊教育学校</text>
-    </view>
+        <text class="location-text">配送至：嘉兴市特殊教育学校</text>
+      </view>
     <view class="search-bar-wrapper">
       <image src="/assets/icons/search.png" class="search-icon" />
       <input class="search-input" placeholder="搜索当前分类商品，如 矿泉水" onInput="onSearchInput" />
     </view>
   </view>
 
-  <!-- 优化的分类菜单项结构 -->
+    <!-- 优化的分类菜单项结构 -->
   <scroll-view scroll-x class="category-tabs-container" scroll-with-animation="{{true}}" show-scrollbar="{{false}}">
     <block a:for="{{categories}}" a:key="id">
       <view class="category-tab-item {{currentCategory.id === item.id ? 'active' : ''}}" onTap="selectCategory" data-id="{{item.id}}">
@@ -66,7 +67,4 @@
       <image src="/assets/icons/refresh.png" class="float-icon" mode="aspectFit" />
     </view>
   </view>
-
-
-<custom-tabbar current="home"></custom-tabbar>
-</view>
+</template>

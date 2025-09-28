@@ -1,8 +1,6 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/cart/cart",
-    "pages/user/user",
+    "pages/app-tabbar/app-tabbar",
     "pages/checkout/checkout",
     "pages/address/address",
     "pages/orderDetail/orderDetail",
@@ -13,6 +11,6 @@
     "defaultTitle": "嘉兴市特殊教育学校团购"
   },
   "usingComponents": {
-    "custom-tabbar": "/components/custom-tabbar/index"
+    "custom-tabbar": "/components/custom-tabbar/index-tabbar"
   }
 }

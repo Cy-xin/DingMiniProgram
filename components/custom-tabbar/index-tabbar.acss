@@ -26,10 +26,14 @@
   color: rgba(0, 0, 0, 0.8);
   font-size: 24rpx;
   transition: all 0.3s ease;
+  padding: 10rpx;
+  border-radius: 20rpx;
+  cursor: pointer;
 }
 
 .tab-item:active {
   transform: scale(0.9); /* 点击时有轻微缩放反馈 */
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .icon {

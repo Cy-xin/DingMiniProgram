@@ -1,0 +1,14 @@
+/* 引入首页样式 */
+@import '../../pages/index/index.acss';
+
+/* 引入购物车样式 */
+@import '../../pages/cart/cart.acss';
+
+/* 引入用户页面样式 */
+@import '../../pages/user/user.acss';
+
+/* 应用容器样式 */
+.app-container {
+  display: flex;
+  flex-direction: column;
+}

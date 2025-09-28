@@ -1,0 +1,15 @@
+/* 全局共享样式 */
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #a8e0ff 0%, #8ee2f5 35%, #92d8f8 65%, #a1c4fd 100%);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 120rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  color: #333;
+  margin-top: 20rpx;
+  margin-left: 20rpx;
+}

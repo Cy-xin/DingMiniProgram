@@ -1,0 +1,16 @@
+<view class="tabbar">
+  <view class="tab-item" onTap="onTabClick" data-index="0">
+    <image class="icon" src="{{current===0 ? '/assets/tabbar/icons-active/home-active.png' : '/assets/tabbar/icons/home.png'}}"/>
+    <text class="tab-text {{current===0 ? 'active' : ''}}">首页</text>
+  </view>
+
+  <view class="tab-item" onTap="onTabClick" data-index="1">
+    <image class="icon" src="{{current===1 ? '/assets/tabbar/icons-active/cart-active.png' : '/assets/tabbar/icons/cart.png'}}"/>
+    <text class="tab-text {{current===1 ? 'active' : ''}}">购物车</text>
+  </view>
+
+  <view class="tab-item" onTap="onTabClick" data-index="2">
+    <image class="icon" src="{{current===2 ? '/assets/tabbar/icons-active/user-active.png' : '/assets/tabbar/icons/user.png'}}"/>
+    <text class="tab-text {{current===2 ? 'active' : ''}}">我的</text>
+  </view>
+</view>
