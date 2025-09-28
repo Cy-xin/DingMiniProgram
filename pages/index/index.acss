@@ -506,7 +506,7 @@
 
 /* --- 空状态 --- */
 .empty-state {
-  margin-top: 100rpx;
+  margin-top: 10rpx;
   padding: 60rpx;
   display: flex;
   flex-direction: column;
