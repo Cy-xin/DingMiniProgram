@@ -51,6 +51,8 @@
             </view>
           </view>
         </block>
+        <!-- 底部占位，防止被 tabbar 挡住 -->
+        <view style="height:140rpx"></view>
       </block>
       <view class="empty-state" a:else>
         <image src="/assets/icons/empty.png" class="empty-icon" />
