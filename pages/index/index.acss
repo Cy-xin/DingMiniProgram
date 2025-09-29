@@ -455,57 +455,8 @@
   transition: all 0.2s;
 }
 
-/* --- 玻璃化悬浮按钮 --- */
-.float-buttons {
-  position: fixed;
-  right: 30rpx;
-  bottom: 180rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-  z-index: 100;
-}
-
-.float-btn {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-
-  /* --- Glassmorphism 核心属性 --- */
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
-}
-
-.float-icon {
-  width: 48rpx;
-  height: 48rpx;
-}
-
-.cart-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: #f56c6c;
-  color: #fff;
-  min-width: 36rpx;
-  height: 36rpx;
-  border-radius: 18rpx;
-  font-size: 22rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 6rpx;
-  border: 3rpx solid #fff; /* 加粗边框使其更突出 */
-}
-
 /* --- 空状态 --- */
-.empty-state {
+.empty-commodity-state {
   margin-top: 10rpx;
   padding: 60rpx;
   display: flex;
@@ -519,14 +470,14 @@
   border-radius: 24rpx;
 }
 
-.empty-icon {
+.empty-commodity-icon {
   width: 180rpx;
   height: 180rpx;
   margin-bottom: 32rpx;
   opacity: 0.6;
 }
 
-.empty-text {
-  font-size: 28rpx;
+.empty-commodity {
+  font-size: 35rpx;
   color: #333;
 }

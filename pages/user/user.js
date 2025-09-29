@@ -1,4 +1,4 @@
-Page({
+Component({
   data: {
     isAuthorized: false,
     userInfo: null,

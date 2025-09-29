@@ -15,22 +15,12 @@
 
   <block a:if="{{activeTab === 1}}">
     <import src="../cart/cart.axml"/>
-    <template is="cart" data="{{
-      cartItems,
-      totalPrice,
-      refreshing
-    }}" />
+    <template is="cart" />
   </block>
 
   <block a:if="{{activeTab === 2}}">
     <import src="../user/user.axml"/>
-    <template is="user" data="{{
-      isAuthorized,
-      userInfo,
-      points,
-      credits,
-      balance
-    }}" />
+    <template is="user" />
   </block>
 
   <!-- 固定的自定义 tabbar -->

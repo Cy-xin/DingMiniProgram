@@ -1,6 +1,15 @@
 import { getGoodsCategories, getGoodsProducts } from '/services/api.js';
 
+import CartPage from '/pages/cart/cart';
+import UserPage from '/pages/user/user';
+
 Page({
+
+  components: {
+    CartPage,
+    UserPage
+  },
+
   data: {
     activeTab: 0,
 
@@ -13,6 +22,16 @@ Page({
     cartItems: [],
     cartTotalQuantity: 0, // 新增：用于悬浮按钮徽标
     searchText: '' // 新增：用于搜索
+  },
+
+  /**
+   * 切换标签 
+   */
+  handleTabChange(e) {
+    const newIndex = parseInt(e.detail.index);
+    this.setData({
+      activeTab: newIndex
+    });
   },
   
   async onLoad() {
@@ -99,41 +118,11 @@ Page({
     }
   },
 
-  // 刷新功能 (优化)
-  async handleRefresh() {
-    dd.showLoading({ content: '刷新中...' });
-    try {
-      if (this.data.currentCategory.id) {
-        // 只刷新当前分类的商品
-        const products = await getGoodsProducts(this.data.currentCategory.id);
-        this.setData({
-          products: products,
-          filteredProducts: products,
-          searchText: '', // 刷新后清空搜索
-        });
-      } else {
-        // 如果没有当前分类（异常情况），则重新初始化
-        await this.initPageData();
-      }
-    } catch (error) {
-      console.error("刷新失败", error);
-    } finally {
-      dd.hideLoading();
-    }
-  },
-
   previewImage(e) {
     const src = e.currentTarget.dataset.src;
     dd.previewImage({
       current: this.data.filteredProducts.findIndex(item => item.image === src),
       urls: this.data.filteredProducts.map(item => item.image),
-    });
-  },
-
-  handleTabChange(e) {
-    const newIndex = parseInt(e.detail.index);
-    this.setData({
-      activeTab: newIndex
     });
   },
 
@@ -145,7 +134,10 @@ Page({
         content: '您需要登录后才能操作，请先登录',
         buttonText: '确定',
         success: () => {
-          dd.switchTab({ url: '/pages/user/user' });
+          // 切换到 user tab
+          this.setData({
+            activeTab: 2
+          });
         }
       });
       return false;
@@ -155,4 +147,94 @@ Page({
     }
     return true;
   },
+
+  /**
+   * 增加商品数量
+   *
+   * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
+   */
+  increaseQuantity(e) {
+    this.checkLogin(() => {
+      const productId = e.currentTarget.dataset.id;
+      const quantities = this.data.quantities;
+      quantities[productId] = (quantities[productId] || 0) + 1;
+      this.setData({ quantities });
+      this.updateCart(productId);
+      this.updateCartBadge();
+    });
+  },
+
+  /**
+   * 减少商品数量
+   *
+   * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
+   */
+  decreaseQuantity(e) {
+    this.checkLogin(() => {
+      const productId = e.currentTarget.dataset.id;
+      const quantities = this.data.quantities;
+      if (quantities[productId] > 0) {
+        quantities[productId] -= 1;
+        this.setData({ quantities });
+        this.updateCart(productId);
+        this.updateCartBadge();
+      }
+    });
+  },
+
+  /**
+   * 更新购物车徽标
+   */
+  updateCartBadge() {
+    const total = Object.values(this.data.quantities).reduce((a, b) => a + b, 0);
+    if (total > 0) {
+      dd.setTabBarBadge({
+        index: 1, // 假设购物车在第二个tab
+        text: total.toString()
+      });
+    } else {
+      dd.removeTabBarBadge({
+        index: 1
+      });
+    }
+  },
+
+  /**
+   * 更新购物车
+   * @param {string} productId - 商品ID
+   */
+  updateCart(productId) {
+    const quantity = this.data.quantities[productId] || 0;
+    const product = this.data.filteredProducts.find(p => p.id === productId);
+    
+    let cartItems = [...this.data.cartItems];
+    const index = cartItems.findIndex(item => item.id === productId);
+    
+    if (quantity > 0) {
+      if (index === -1) {
+        cartItems.push({
+          ...product,
+          quantity
+        });
+      } else {
+        cartItems[index].quantity = quantity;
+      }
+    } else {
+      cartItems = cartItems.filter(item => item.id !== productId);
+    }
+    
+    // 同步到全局数据
+    const app = getApp();
+    app.globalData.cartItems = cartItems;
+    this.setData({ cartItems });
+
+    // 如果用户已登录，同步购物车数据到后端
+    if (app.globalData.isAuthorized) {
+      this.syncCartDataToServer(cartItems);
+    }
+
+    // 通过事件总线通知购物车页面
+    app.eventBus.emit('cartUpdated', cartItems);
+  },
+
 });

@@ -7,7 +7,7 @@
       </view>
     <view class="search-bar-wrapper">
       <image src="/assets/icons/search.png" class="search-icon" />
-      <input class="search-input" placeholder="搜索当前分类商品，如 矿泉水" onInput="onSearchInput" />
+      <input class="search-input" placeholder="搜索当前分类商品" onInput="onSearchInput" />
     </view>
   </view>
 
@@ -53,18 +53,12 @@
           </view>
         </block>
         <!-- 底部占位，防止被 tabbar 挡住 -->
-        <view style="height:140rpx"></view>
+        <view style="height:100rpx"></view>
       </block>
-      <view class="empty-state" a:else>
-        <image src="/assets/icons/empty.png" class="empty-icon" />
-        <text class="empty-text">该分类下暂无商品</text>
+      <view class="empty-commodity-state" a:else>
+        <image src="/assets/icons/empty.png" class="empty-commodity-icon" />
+        <text class="empty-commodity">该分类下暂无商品</text>
       </view>
     </view>
   </scroll-view>
-
-  <view class="float-buttons">
-    <view class="float-btn refresh-btn" onTap="handleRefresh">
-      <image src="/assets/icons/refresh.png" class="float-icon" mode="aspectFit" />
-    </view>
-  </view>
 </template>

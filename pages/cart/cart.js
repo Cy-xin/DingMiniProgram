@@ -1,4 +1,4 @@
-Page({
+Component({
   data: {
     cartItems: [],
     totalPrice: 0,
