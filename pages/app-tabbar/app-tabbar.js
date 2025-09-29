@@ -1,14 +1,6 @@
-import { getGoodsCategories, getGoodsProducts } from '/services/api.js';
-
-import CartPage from '/pages/cart/cart';
-import UserPage from '/pages/user/user';
+import { getGoodsCategories, getGoodsProducts, getUserOrderInfo, getUserInfo } from '/services/api.js';
 
 Page({
-
-  components: {
-    CartPage,
-    UserPage
-  },
 
   data: {
     activeTab: 0,
@@ -21,7 +13,15 @@ Page({
     filteredProducts: [],
     cartItems: [],
     cartTotalQuantity: 0, // 新增：用于悬浮按钮徽标
-    searchText: '' // 新增：用于搜索
+    searchText: '', // 新增：用于搜索
+
+
+    //我的相关
+    isAuthorized: false,
+    userInfo: null,
+    points: 0,
+    credits: 0,
+    balance: 0,
   },
 
   /**
@@ -36,6 +36,8 @@ Page({
   
   async onLoad() {
     await this.initPageData();
+
+    await this.checkAuthStatus();
   },
 
   /**
@@ -127,8 +129,7 @@ Page({
   },
 
   checkLogin(callback) {
-    const app = getApp();
-    if (!app.globalData.isAuthorized) {
+    if (!this.data.isAuthorized) {
       dd.alert({
         title: '提示',
         content: '您需要登录后才能操作，请先登录',
@@ -235,6 +236,248 @@ Page({
 
     // 通过事件总线通知购物车页面
     app.eventBus.emit('cartUpdated', cartItems);
+  },
+
+
+
+
+
+  //我的逻辑
+
+  /**
+   * 检查授权状态
+   */
+  async checkAuthStatus() {
+    console.log('检查授权状态');
+    dd.getStorage({
+      key: 'userInfo',
+      success: (res) => {
+        console.log('获取存储的用户信息:', res.data);
+        if (res.data) {
+          this.setData({
+            isAuthorized: true,
+            userInfo: res.data
+          });
+        } else {
+          this.setData({
+            isAuthorized: false,
+            userInfo: null
+          });
+        }
+
+        console.log('是否登录:', this.data.isAuthorized);
+        if (this.data.isAuthorized) {
+          this.getUserOrderDetail();
+        }
+      },
+      fail: (err) => {
+        console.error('获取存储失败:', err);
+        this.setData({
+          isAuthorized: false,
+          userInfo: null
+        });
+      }
+    });
+  },
+
+  /**
+   * 获取用户积分、订单数量、余额等信息
+   */
+  async getUserOrderDetail() {
+    const that = this;
+    const mobile = this.data.userInfo.mobile;
+    //console.log('开始获取用户订单信息......', mobile);
+    const userOrderDetail = await getUserOrderInfo(mobile);
+    if (userOrderDetail == 501) {
+      console.log('登录过期', userOrderDetail);
+      this.setData({
+        activeTab: 2
+      });
+    } else {
+      that.setData({
+        points: userOrderDetail.points,
+        credits: userOrderDetail.credits,
+        balance: userOrderDetail.balance
+      });
+    }
+  },
+
+  /**
+   * 处理授权
+   */
+  handleAuth(e) {
+    console.log('点击授权按钮', e);
+    dd.showToast({
+      content: '正在处理授权...',
+      type: 'none'
+    });
+    
+    const that = this;
+    dd.getAuthCode({
+      success(res) {
+        console.log("获取授权码成功:", res.authCode);
+        // 使用授权码换取用户信息
+        that.getUserInfo(res.authCode);
+      },
+      fail(err) {
+        console.error("获取授权码失败:", err);
+        dd.showToast({
+          content: '授权失败，请重试',
+          type: 'fail'
+        });
+      }
+    });
+  },
+
+  /**
+   * 获取用户信息
+   */
+  async getUserInfo(authCode) {
+    const that = this;
+    const app = getApp();
+
+    const userInfo = await getUserInfo(authCode);
+    dd.setStorage({
+      key: 'userInfo',
+      data: userInfo,
+      success: () => {
+        // 更新全局数据
+        app.globalData.isAuthorized = true;
+        app.globalData.userInfo = userInfo;
+        app.globalData.token = userInfo.token; // 假设 userInfo 中包含 token
+
+        // 更新页面数据
+        that.setData({ 
+          isAuthorized: true,
+          userInfo: userInfo,
+          points: userInfo.points,
+          credits: userInfo.credits,
+          balance: userInfo.balance
+        });
+
+        dd.showToast({
+          content: '登录成功',
+          type: 'success'
+        });
+
+        // 登录成功获取用户订单信息，加载购物车数据
+        if (that.data.isAuthorized && app.globalData.token != null) {
+          that.getUserOrderDetail();
+          that.fetchCartDataFromServer();
+        }
+      },
+      fail: (err) => {
+        console.error('保存用户信息失败:', err);
+      }
+    });
+  },
+
+    /**
+   * 从服务器获取购物车数据
+   */
+  fetchCartDataFromServer() {
+    const app = getApp();
+    dd.httpRequest({
+      url: `${app.globalData.baseUrl}/cart/getCartInfo`,
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + app.globalData.token
+      },
+      success: (res) => {
+        if (res.data.code === 200) {
+          const cartItems = res.data.data;
+          if (!Array.isArray(cartItems)) {
+            console.error('fetchCartDataFromServer: cartItems 不是数组', cartItems);
+            return;
+          }
+          // 同步到全局数据
+          app.globalData.cartItems = cartItems;
+          // 通知购物车页面更新数据
+          app.eventBus.emit('cartUpdated', cartItems);
+
+          // 更新购物车徽标
+          this.updateCartBadge();
+        }
+      },
+      fail: (err) => {
+        console.error("获取购物车数据失败:", err);
+      }
+    });
+  },
+
+  // 导航到积分明细页面
+  navigateToPoints() {
+    dd.navigateTo({
+      url: '/pages/points/points',
+      success: () => {},
+      fail: (err) => {
+        dd.showToast({
+          content: '跳转积分列表失败：' + (err.errorMessage || '未知错误'),
+          type: 'fail'
+        });
+      }
+    });
+  },
+
+    /** 
+   * 跳转到订单列表页面
+   */
+  navigateToOrders() {
+    dd.navigateTo({
+      url: '/pages/order/list',
+      success: () => {},
+      fail: (err) => {
+        dd.showToast({
+          content: '跳转订单列表失败：' + (err.errorMessage || '未知错误'),
+          type: 'fail'
+        });
+      }
+    });
+  },
+
+  /**
+   * 处理退出登录
+   */
+  handleLogout() {
+    const that = this;
+    const app = getApp();
+    dd.confirm({
+      title: '提示',
+      content: '确定要退出登录吗？',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          dd.removeStorage({
+            key: 'userInfo',
+            success: () => {
+              // 更新全局数据
+              app.globalData.isAuthorized = false;
+              app.globalData.userInfo = null;
+              app.globalData.token = null;
+
+              // 清空购物车数据
+              app.globalData.cartItems = [];
+
+              // 更新页面数据
+              this.setData({
+                isAuthorized: false,
+                userInfo: null,
+                points: 0,
+                credits: 0,
+                balance: 0
+              });
+
+              // 更新购物车徽标
+              this.updateCartBadge();
+            }
+          });
+        }
+      },
+      fail: (err) => {
+        console.error("调用 confirm 失败:", err);
+      }
+    });
   },
 
 });

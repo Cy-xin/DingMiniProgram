@@ -1,7 +1,7 @@
 // /services/api.js
 
 const app = getApp();
-const BASE_URL = app.globalData.baseUrl;
+const BASE_URL = app.urlData.baseUrl;
 
 /**
  * 封装一个通用的请求函数
@@ -17,6 +17,15 @@ const request = (options) => {
         if (res.data && res.data.code === 200) {
           // 只返回核心数据部分
           resolve(res.data.data);
+        } else if (res.data.code == 501) {
+          
+          //token过期，重新登录
+          dd.alert({
+            title: '提示',
+            content: '登录过期，请重新登录',
+            buttonText: '确定',
+          });
+          resolve(res.data.code);
         } else {
           // 统一处理业务错误
           reject(res.data || { message: '服务器返回错误' });
@@ -52,5 +61,30 @@ export const getGoodsProducts = (categoryId) => {
   return request({
     url: `/dingTalkGoods/getGoodsProducts?categoryId=${categoryId}`,
     method: 'GET'
+  });
+};
+
+
+export const getUserOrderInfo = (mobile) => {
+  return request({
+    url: `/dingTalkOrder/getOrderInfo`,
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + app.globalData.token
+    },
+    data: JSON.stringify({ mobile }),
+  });
+};
+
+
+export const getUserInfo = (authCode) => {
+  return request({
+    url: `/login/getUserInfo`,
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    data: JSON.stringify({ authCode }),
   });
 };

@@ -41,7 +41,7 @@
               </view>
               <view class="price-and-action">
                 <text class="product-price">¥{{item.price.toFixed(2)}}</text>
-                <view class="quantity-control" catchTap="stopPropagation">
+                <view class="quantity-control">
                   <block a:if="{{quantities[item.id] > 0}}">
                     <view class="quantity-button decrease" onTap="decreaseQuantity" data-id="{{item.id}}">-</view>
                     <text class="quantity-display">{{quantities[item.id]}}</text>

@@ -1,12 +1,14 @@
 // 在 app.js 中添加全局方法
 App({
+  urlData: {
+    //baseUrl: "https://i.jxtejiao.com/api" // 统一请求 URL 前缀
+    baseUrl: "http://127.0.0.1:8081/api"
+  },
   globalData: {
     isAuthorized: false, // 默认未登录
     userInfo: null,      // 用户信息
     token: null,         // 用户 token
     cartItems: [],       // 购物车数据
-    //baseUrl: "https://i.jxtejiao.com/api" // 统一请求 URL 前缀
-    baseUrl: "http://127.0.0.1:8081/api"
   },
 
   
@@ -35,6 +37,7 @@ App({
       const userInfo = dd.getStorageSync({ 
         key: 'userInfo',
         success: function (res) {
+          console.log("本地缓存", res);
           if (res.data) {
             app.globalData.userInfo = res.data;
             app.globalData.token = res.data.token;
@@ -54,7 +57,7 @@ App({
         // 使用授权码换取用户信息
         // 无缓存时调用后端接口获取用户信息
         dd.httpRequest({
-          url: `${app.globalData.baseUrl}/login/getCurrentUser`,
+          url: `${app.urlData.baseUrl}/login/getCurrentUser`,
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           data: JSON.stringify({ authCode }),

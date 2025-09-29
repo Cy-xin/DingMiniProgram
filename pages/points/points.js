@@ -9,6 +9,7 @@ Page({
 
   fetchPointsDetail() {
     const app = getApp();
+    console.log("url:", app.globalData.baseUrl)
     dd.httpRequest({
       url: `${app.globalData.baseUrl}/dingTalkOrder/pointsList`,
       method: "GET",
