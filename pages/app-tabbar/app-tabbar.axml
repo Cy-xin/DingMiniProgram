@@ -37,5 +37,6 @@
   <custom-tabbar 
     activeTab="{{activeTab}}" 
     cartCount="{{cartTotalQuantity}}"
-    onTabChange="handleTabChange" />
+    onTabChange="handleTabChange" 
+    onUserClick="handleUserClick"/>
 </view>

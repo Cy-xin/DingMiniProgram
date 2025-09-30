@@ -44,6 +44,11 @@ Component({
           } 
         });
       }
+
+      //点击我的页面
+      if (index === 2 && this.props.onUserClick) {
+        this.props.onUserClick();
+      }
     },
   }
 });

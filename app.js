@@ -1,8 +1,8 @@
 // 在 app.js 中添加全局方法
 App({
   urlData: {
-    //baseUrl: "https://i.jxtejiao.com/api" // 统一请求 URL 前缀
-    baseUrl: "http://127.0.0.1:8081/api"
+    baseUrl: "https://i.jxtejiao.com/api" // 统一请求 URL 前缀
+    //baseUrl: "http://127.0.0.1:8081/api"
   },
   globalData: {
     isAuthorized: false, // 默认未登录

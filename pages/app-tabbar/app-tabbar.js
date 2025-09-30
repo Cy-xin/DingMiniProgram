@@ -41,14 +41,32 @@ Page({
     if (newIndex === 1) {
       this.loadCartData();
     }
+
     this.setData({
       activeTab: newIndex
     });
   },
+
+  //处理点击我的页面
+  handleUserClick() {
+    console.log("✅ 在 app-tabbar.js 中被触发了");
+    // 这里可以调用任何逻辑，比如刷新购物车数据
+    this.checkAuthStatus();
+  },
   
   async onLoad() {
     await this.initPageData();
-    await this.checkAuthStatus();
+
+    const app = getApp();
+    app.eventBus.on("goodsUpdated", (data) => {
+      console.log("收到更新", data);
+      this.setData({
+        quantities: data.quantities,
+        cartItems: data.totalPrice,
+        totalPrice: data.totalPrice,
+        cartTotalQuantity: data.cartTotalQuantity, 
+      });
+    });
   },
 
   /**

@@ -471,8 +471,8 @@
 }
 
 .empty-commodity-icon {
-  width: 180rpx;
-  height: 180rpx;
+  width: 100rpx;
+  height: 100rpx;
   margin-bottom: 32rpx;
   opacity: 0.6;
 }
