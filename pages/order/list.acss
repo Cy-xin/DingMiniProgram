@@ -3,7 +3,7 @@
 }
 
 .order-item {
-  background: #ffffff;
+  background: #ffffff45;
   border-radius: 20rpx;
   padding: 32rpx 24rpx;
   margin-bottom: 32rpx;

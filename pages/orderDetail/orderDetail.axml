@@ -9,7 +9,6 @@
     <!-- 收货地址 -->
     <view class="card address-card" a:if="{{orderDetail.address}}">
       <view class="flex-row">
-        <text class="iconfont icon-dizhi"></text>
         <view class="address-info">
           <text class="name-phone">{{orderDetail.address.name}} {{orderDetail.address.phone}}</text>
           <text class="detail-address">{{orderDetail.address.detail}}</text>

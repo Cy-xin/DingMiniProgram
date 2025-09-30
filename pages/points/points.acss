@@ -5,7 +5,7 @@
 .points-item {
   margin: 24rpx 0;
   padding: 32rpx;
-  background: #fff;
+  background: #ffffff45;
   border-radius: 16rpx;
   box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06);
 }

@@ -6,7 +6,7 @@
 
 /* 通用卡片样式 */
 .card {
-  background: #fff;
+  background: #ffffff45;
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
@@ -19,6 +19,7 @@
   color: #fff;
   padding: 32rpx;
   border-radius: 16rpx;
+  margin-bottom: 20rpx;
 }
 .status-text {
   font-size: 36rpx;
