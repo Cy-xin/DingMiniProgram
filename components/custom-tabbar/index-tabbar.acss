@@ -29,6 +29,9 @@
   padding: 10rpx;
   border-radius: 20rpx;
   cursor: pointer;
+
+  /* 关键点：让徽标参照当前 tab-item 定位 */
+  position: relative;
 }
 
 .tab-item:active {
@@ -48,4 +51,22 @@
   color: #4795D5;
   font-weight: bold;
   text-shadow: 0 0 8rpx rgba(255, 255, 255, 0.6); /* 发光效果 */
+}
+
+.badge {
+  position: absolute;
+  top: 0rpx;     /* 根据图标大小可微调 */
+  right: 26rpx;  /* 根据购物车图标大小可微调 */
+  background: #f56c6c;
+  color: #fff;
+  min-width: 32rpx;
+  height: 32rpx;
+  padding: 0 8rpx;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 32rpx;
+  z-index: 10;
 }

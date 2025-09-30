@@ -15,6 +15,7 @@
             <block a:for="{{cartItems}}" a:key="id">
               <view class="vertical-card">
                 <view class="card-content">
+                  <!-- 商品图片 -->
                   <image 
                     class="product-thumb" 
                     src="{{item.image}}" 
@@ -22,6 +23,7 @@
                     onTap="previewImage"
                     data-src="{{item.image}}"
                   />
+                  <!-- 商品信息 -->
                   <view class="product-info">
                     <text class="product-title">{{item.name}}</text>
                     <view class="price-section">
@@ -29,13 +31,13 @@
                       <view class="quantity-picker">
                         <text 
                           class="btn-quantity" 
-                          onTap="decreaseQuantity" 
+                          onTap="decreaseCartQuantity" 
                           data-id="{{item.id}}"
                         >-</text>
                         <text class="quantity-value">{{item.quantity}}</text>
                         <text 
                           class="btn-quantity" 
-                          onTap="increaseQuantity" 
+                          onTap="increaseCartQuantity" 
                           data-id="{{item.id}}"
                         >+</text>
                       </view>
@@ -46,6 +48,8 @@
             </block>
           </view>
         </block>
+
+        <!-- 空状态 -->
         <view class="empty-state" a:else>
           <image src="/assets/icons/empty-cart.png" class="empty-icon" />
           <text class="empty-text">购物车还是空的</text>
@@ -61,11 +65,12 @@
         </view>
         <view class="footer-buttons">
           <button class="clear-btn" onTap="clearCart">清空</button>
-          <button class="checkout-btn" onTap="goToCheckout">去结算</button>
+          <button class="checkout-btn" onTap="goToCheckout">
+            去结算
+          </button>
         </view>
       </view>
+
     </view>
   </view>
 </template>
-
-

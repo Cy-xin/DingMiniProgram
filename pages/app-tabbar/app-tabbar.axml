@@ -36,5 +36,6 @@
   <!-- 固定的自定义 tabbar -->
   <custom-tabbar 
     activeTab="{{activeTab}}" 
+    cartCount="{{cartTotalQuantity}}"
     onTabChange="handleTabChange" />
 </view>

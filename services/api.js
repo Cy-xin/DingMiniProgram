@@ -81,3 +81,26 @@ export const getUserInfo = (authCode) => {
     data: JSON.stringify({ authCode }),
   });
 };
+
+export const cartDataToServer = (cartItems) => {
+  return request({
+    url: `/cart/saveCartItemByMobile`,
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + app.globalData.token
+    },
+    data: JSON.stringify({ cartItems }),
+  });
+};
+
+export const clearCartDataToServer = () => {
+  return request({
+    url: `/cart/saveCartItemByMobile`,
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + app.globalData.token
+    },
+  });
+};

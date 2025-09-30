@@ -1,6 +1,8 @@
 import { 
   getGoodsCategories, 
   getGoodsProducts, 
+  clearCartDataToServer,
+  cartDataToServer,
   getUserOrderInfo, 
   getUserInfo } from '/services/api.js';
 
@@ -20,6 +22,8 @@ Page({
     cartTotalQuantity: 0, // 新增：用于悬浮按钮徽标
     searchText: '', // 新增：用于搜索
 
+    //购物车相关
+    totalPrice: 0,
 
     //我的data相关
     isAuthorized: false,
@@ -34,6 +38,9 @@ Page({
    */
   handleTabChange(e) {
     const newIndex = parseInt(e.detail.index);
+    if (newIndex === 1) {
+      this.loadCartData();
+    }
     this.setData({
       activeTab: newIndex
     });
@@ -169,7 +176,9 @@ Page({
       const productId = e.currentTarget.dataset.id;
       const quantities = this.data.quantities;
       quantities[productId] = (quantities[productId] || 0) + 1;
+      //更新数组数据
       this.setData({ quantities });
+      //更新购物车数据
       this.updateCart(productId);
       this.updateCartBadge();
     });
@@ -198,16 +207,10 @@ Page({
    */
   updateCartBadge() {
     const total = Object.values(this.data.quantities).reduce((a, b) => a + b, 0);
-    if (total > 0) {
-      dd.setTabBarBadge({
-        index: 1, // 假设购物车在第二个tab
-        text: total.toString()
-      });
-    } else {
-      dd.removeTabBarBadge({
-        index: 1
-      });
-    }
+    console.log("图标数量：", total);
+    this.setData({
+      cartTotalQuantity: total
+    });
   },
 
   /**
@@ -243,12 +246,219 @@ Page({
     if (app.globalData.isAuthorized) {
       this.syncCartDataToServer(cartItems);
     }
-
-    // 通过事件总线通知购物车页面
-    app.eventBus.emit('cartUpdated', cartItems);
   },
 
 
+
+  //购物车逻辑
+
+  /**
+   * 跳转到首页
+   */
+  goShopping() {
+    this.setData({
+      activeTab: 0
+    });
+  },
+
+  /**
+   * 同步购物车数据到后端
+   * @param {Array} cartItems - 购物车数据
+   */
+  async syncCartDataToServer(cartItems) {
+    await cartDataToServer(cartItems); 
+  },
+
+    /**
+   * 加载购物车数据
+   */
+  loadCartData() {
+    let cartItems = [...this.data.cartItems];
+    this.calculateTotal(cartItems);
+  },
+
+  /**
+   * 计算商品总价
+   *
+   * @param {Array} items - 商品列表数组，每个商品为一个对象，包含价格（price）和数量（quantity）属性
+   */
+  calculateTotal(items = []) {
+    const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    this.setData({ totalPrice: total });
+
+    console.log("数量", total);
+    console.log("数量2：", this.data.totalPrice);
+  },
+
+  /**
+   * 购物车增加商品数量
+   *
+   * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
+   */
+  increaseCartQuantity(e) {
+    const productId = e.currentTarget.dataset.id;
+    const cartItems = this.data.cartItems.map(item => {
+      if (item.id === productId) {
+        return {
+          ...item,
+          quantity: item.quantity + 1
+        };
+      }
+      return item;
+    });
+
+    const quantities = this.data.quantities;
+    quantities[productId] = (quantities[productId] || 0) + 1;
+    this.setData({ quantities });
+
+    this.updateCartDataAndSync(cartItems);
+  },
+
+  /**
+   * 减少商品数量
+   *
+   * @param {Object} e - 事件对象，包含当前目标元素的 dataset 属性
+   */
+  decreaseCartQuantity(e) {
+    const productId = e.currentTarget.dataset.id;
+
+    let cartItems = this.data.cartItems.map(item => {
+      if (item.id === productId) {
+        const newQty = item.quantity - 1;
+        if (newQty > 0) {
+          return {
+            ...item,
+            quantity: newQty
+          };
+        } else {
+          return null;
+        }
+      }
+      return item;
+    }).filter(Boolean);
+    
+    const quantities = this.data.quantities;
+    if (quantities[productId] > 0) {
+      quantities[productId] -= 1;
+      this.setData({ quantities });
+      this.updateCart(productId);
+      this.updateCartBadge();
+    }
+
+    this.updateCartDataAndSync(cartItems);
+  },
+
+  /**
+   * 统一更新购物车数据，更新视图，更新全局数据，调用后端同步并发送事件
+   */
+  updateCartDataAndSync(cartItems) {
+    this.updateCartData(cartItems);
+
+    const app = getApp();
+    if (app.globalData.isAuthorized) {
+      this.syncCartDataToServer(cartItems);
+    }
+  },
+
+  /**
+   * 更新购物车
+   */
+  updateCartData(cartItems) {
+    this.setData({ cartItems });
+    this.calculateTotal(cartItems);
+    this.updateCartBadge();
+  },
+
+  /**
+   * 清空购物车
+   */
+  clearCart() {
+    // 检查购物车是否为空
+    if (this.data.cartItems.length === 0) {
+      dd.showToast({
+        type: 'none',
+        content: '购物车已经是空的了！',
+        duration: 2000
+      });
+      return;
+    }
+    const app = getApp();
+    // 添加确认提示
+    dd.confirm({
+      title: '确认清空购物车',
+      content: '您确定要清空购物车吗？',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      success: (result) => {
+        if (result.confirm) {
+          // 用户点击确定
+          app.globalData.cartItems = [];
+          this.setData({
+            cartItems: [],
+            totalPrice: 0,
+            quantities: {}
+          });
+          // 更新购物车徽标
+          this.updateCartBadge();
+
+          // 清空购物车数据
+          this.syncClearCartData();
+          dd.showToast({
+            type: 'success',
+            content: '购物车已清空',
+            duration: 2000
+          });
+        }
+      }
+    });
+  },
+
+  /**
+   * 清空购物车数据到后端
+   */
+  async syncClearCartData() {
+    const result = await clearCartDataToServer();
+    console.log("清空购物车，请求后端返回结果：", result);
+  },
+
+    /**
+   * 跳转到结账单页面
+   */
+  goToCheckout() {
+    const app = getApp();
+
+    // 检查购物车是否为空
+    if (this.data.cartItems.length === 0) {
+      dd.showToast({
+        type: 'none',
+        content: '购物车是空的，请先添加商品再结算',
+        duration: 2000
+      });
+      return;
+    }
+
+    // 检查用户是否已登录
+    if (!app.globalData.isAuthorized) {
+      dd.showToast({
+        type: 'none',
+        content: '您需要登录后才能结算，请先登录',
+        duration: 2000
+      });
+      setTimeout(() => {
+        this.setData({
+          activeTab: 2
+        });
+      }, 2000);
+      return;
+    }
+
+    const cartItems = this.data.cartItems;
+
+    // 跳转到结账单页面
+    dd.navigateTo({
+      url: `/pages/checkout/checkout?cartItems=${encodeURIComponent(JSON.stringify(cartItems))}&totalPrice=${this.data.totalPrice}`
+    });
+  },
 
 
 

@@ -1,13 +1,12 @@
 .container {
     padding: 24rpx;
-    background-color: #f8f9fa;
     height: 100vh;
     display: flex;
     flex-direction: column;
   }
   
   .address-section {
-    background: #fff;
+    background: #ffffff45;
     border-radius: 16rpx;
     padding: 24rpx;
     margin-bottom: 20rpx;
@@ -60,7 +59,7 @@
   }
   
   .product-section {
-    background: #fff;
+    background: #ffffff45;
     border-radius: 16rpx;
     padding: 24rpx;
     margin-bottom: 20rpx;
@@ -109,7 +108,7 @@
   }
   
   .total-section {
-    background: #fff;
+    background: #ffffff45;
     border-radius: 16rpx;
     padding: 24rpx;
     margin-bottom: 20rpx;
@@ -131,7 +130,7 @@
   }
   
   .submit-section {
-    background: #fff;
+    background: #ffffff45;
     border-radius: 16rpx;
     padding: 24rpx;
   }

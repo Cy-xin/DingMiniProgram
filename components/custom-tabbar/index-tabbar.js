@@ -1,7 +1,8 @@
 Component({
   props: {
     activeTab: 0,
-    onTabChange: null
+    onTabChange: null,
+    cartCount: 0 // 新增：购物车数量
   },
   data: {
     current: 0, // 内部维护的当前选中状态

@@ -7,6 +7,10 @@
   <view class="tab-item" onTap="onTabClick" data-index="1">
     <image class="icon" src="{{current===1 ? '/assets/tabbar/icons-active/cart-active.png' : '/assets/tabbar/icons/cart.png'}}"/>
     <text class="tab-text {{current===1 ? 'active' : ''}}">购物车</text>
+    <!-- 购物车徽标 -->
+    <view class="badge" a:if="{{cartCount > 0}}">
+      {{cartCount}}
+    </view>
   </view>
 
   <view class="tab-item" onTap="onTabClick" data-index="2">
