@@ -32,7 +32,7 @@ Page({
   fetchUserAddress() {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkAddress/getAddress`,
+      url: `${app.urlData.baseUrl}/dingTalkAddress/getAddress`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token
@@ -85,7 +85,7 @@ Page({
     this.setData({ submitting: true });
 
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkOrder/createOrder`,
+      url: `${app.urlData.baseUrl}/dingTalkOrder/createOrder`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -17,7 +17,7 @@ Page({
     
     dd.showLoading({ content: '加载中...' })
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkOrder/getOrderDetail/${orderNumber}`,
+      url: `${app.urlData.baseUrl}/dingTalkOrder/getOrderDetail/${orderNumber}`,
       method: 'GET',
       headers: {
         "Authorization": "Bearer " + app.globalData.token

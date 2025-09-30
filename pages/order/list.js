@@ -11,7 +11,7 @@ Page({
     // 调用后端接口获取订单列表
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkOrder/orderList`,
+      url: `${app.urlData.baseUrl}/dingTalkOrder/orderList`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token

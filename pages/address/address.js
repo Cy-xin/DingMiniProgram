@@ -18,7 +18,7 @@ Page({
   fetchAddressList() {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkAddress/getAddress`,
+      url: `${app.urlData.baseUrl}/dingTalkAddress/getAddress`,
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + app.globalData.token
@@ -72,8 +72,8 @@ Page({
     const app = getApp();
     const method = this.data.editAddress.id ? 'POST' : 'POST';
     const url = this.data.editAddress.id ? 
-      `${app.globalData.baseUrl}/dingTalkAddress/updateAddress` :
-      `${app.globalData.baseUrl}/dingTalkAddress/addAddress`;
+      `${app.urlData.baseUrl}/dingTalkAddress/updateAddress` :
+      `${app.urlData.baseUrl}/dingTalkAddress/addAddress`;
 
     dd.httpRequest({
       url: url,

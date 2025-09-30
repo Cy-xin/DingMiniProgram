@@ -242,7 +242,7 @@ Component({
   fetchCartDataFromServer() {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/cart/getCartInfo`,
+      url: `${app.urlData.baseUrl}/cart/getCartInfo`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token
@@ -282,7 +282,7 @@ Component({
   syncCartDataToServer(cartItems) {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/cart/saveCartItemByMobile`,
+      url: `${app.urlData.baseUrl}/cart/saveCartItemByMobile`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -316,7 +316,7 @@ Component({
   syncClearCartData() {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/cart/clearCartItemByMobile`,
+      url: `${app.urlData.baseUrl}/cart/clearCartItemByMobile`,
       method: "GET",
       headers: {
         "Content-Type": "application/json",

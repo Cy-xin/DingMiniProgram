@@ -1,11 +1,16 @@
-import { getGoodsCategories, getGoodsProducts, getUserOrderInfo, getUserInfo } from '/services/api.js';
+import { 
+  getGoodsCategories, 
+  getGoodsProducts, 
+  getUserOrderInfo, 
+  getUserInfo } from '/services/api.js';
 
 Page({
 
   data: {
+    //tabbar标签页
     activeTab: 0,
 
-    //首页相关
+    //首页data相关
     categories: [],
     products: [],
     currentCategory: {},
@@ -16,7 +21,7 @@ Page({
     searchText: '', // 新增：用于搜索
 
 
-    //我的相关
+    //我的data相关
     isAuthorized: false,
     userInfo: null,
     points: 0,
@@ -36,7 +41,6 @@ Page({
   
   async onLoad() {
     await this.initPageData();
-
     await this.checkAuthStatus();
   },
 
@@ -120,6 +124,9 @@ Page({
     }
   },
 
+  /**
+   * 点击图片展示
+   */
   previewImage(e) {
     const src = e.currentTarget.dataset.src;
     dd.previewImage({
@@ -128,6 +135,9 @@ Page({
     });
   },
 
+  /**
+   * 添加商品——检验是否登录
+   */
   checkLogin(callback) {
     if (!this.data.isAuthorized) {
       dd.alert({
@@ -289,7 +299,33 @@ Page({
     //console.log('开始获取用户订单信息......', mobile);
     const userOrderDetail = await getUserOrderInfo(mobile);
     if (userOrderDetail == 501) {
+      //token过期，重新登录
+      dd.alert({
+        title: '提示',
+        content: '登录过期，请重新登录',
+        buttonText: '确定',
+      });
       console.log('登录过期', userOrderDetail);
+
+      dd.removeStorage({
+        key: 'userInfo',
+        success: () => {
+          // 更新全局数据
+          const app = getApp();
+          app.globalData.isAuthorized = false;
+          app.globalData.userInfo = null;
+          app.globalData.token = null;
+
+          // 更新页面数据
+          that.setData({
+            isAuthorized: false,
+            userInfo: null,
+            points: 0,
+            credits: 0,
+            balance: 0
+          });
+        }
+      });
       this.setData({
         activeTab: 2
       });
@@ -378,7 +414,7 @@ Page({
   fetchCartDataFromServer() {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/cart/getCartInfo`,
+      url: `${app.urlData.baseUrl}/cart/getCartInfo`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token

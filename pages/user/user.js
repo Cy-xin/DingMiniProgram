@@ -98,7 +98,7 @@ Component({
     const that = this;
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/login/getUserInfo`,
+      url: `${app.urlData.baseUrl}/login/getUserInfo`,
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -165,7 +165,7 @@ Component({
   fetchCartDataFromServer() {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/cart/getCartInfo`,
+      url: `${app.urlData.baseUrl}/cart/getCartInfo`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token
@@ -221,7 +221,7 @@ Component({
 
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkOrder/getOrderInfo`,
+      url: `${app.urlData.baseUrl}/dingTalkOrder/getOrderInfo`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",

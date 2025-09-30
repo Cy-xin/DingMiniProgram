@@ -81,7 +81,7 @@ Page({
     });
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkGoods/getGoodsCategories`,
+      url: `${app.urlData.baseUrl}/dingTalkGoods/getGoodsCategories`,
       method: 'GET',
       success: (res) => {
         if (res.data.code === 200) {
@@ -129,7 +129,7 @@ Page({
     dd.showLoading({ title: '加载商品...' });
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkGoods/getGoodsProducts?categoryId=${categoryId}`,
+      url: `${app.urlData.baseUrl}/dingTalkGoods/getGoodsProducts?categoryId=${categoryId}`,
       method: 'GET',
       success: (res) => {
         if (res.data.code === 200) {
@@ -285,7 +285,7 @@ Page({
   syncCartDataToServer(cartItems) {
     const app = getApp();
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/cart/saveCartItemByMobile`,
+      url: `${app.urlData.baseUrl}/cart/saveCartItemByMobile`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",

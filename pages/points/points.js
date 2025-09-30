@@ -9,9 +9,9 @@ Page({
 
   fetchPointsDetail() {
     const app = getApp();
-    console.log("url:", app.globalData.baseUrl)
+    console.log("url:", app.urlData.baseUrl)
     dd.httpRequest({
-      url: `${app.globalData.baseUrl}/dingTalkOrder/pointsList`,
+      url: `${app.urlData.baseUrl}/dingTalkOrder/pointsList`,
       method: "GET",
       headers: {
         "Authorization": "Bearer " + app.globalData.token

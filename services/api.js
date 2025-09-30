@@ -18,13 +18,6 @@ const request = (options) => {
           // 只返回核心数据部分
           resolve(res.data.data);
         } else if (res.data.code == 501) {
-          
-          //token过期，重新登录
-          dd.alert({
-            title: '提示',
-            content: '登录过期，请重新登录',
-            buttonText: '确定',
-          });
           resolve(res.data.code);
         } else {
           // 统一处理业务错误

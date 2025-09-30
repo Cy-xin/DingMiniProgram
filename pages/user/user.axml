@@ -1,5 +1,5 @@
 <template name="user">
-  <view class="page">
+  <view class="page-container">
     <!-- 授权或用户信息区域 -->
     <view class="user-info-section">
       <block a:if="{{!isAuthorized}}">
@@ -19,17 +19,18 @@
           <view class="profile-header">
             <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"/>
             <view class="user-detail">
-              <text class="nickname">{{userInfo.name}}</text>
+              <text class="nickname">{{userInfo.name || '用户名称'}}</text>
               <view class="user-tags">
                 <text class="tag">教职工</text>
                 <text class="tag">已认证</text>
+                <!-- 可以根据需要添加更多动态标签 -->
               </view>
             </view>
           </view>
         </view>
       </block>
     </view>
-  
+
     <!-- 统计栏区域 -->
     <view class="user-stats" a:if="{{isAuthorized}}">
       <view class="stat-item" onTap="navigateToPoints">
@@ -51,7 +52,7 @@
         </view>
       </view>
     </view>
-  
+
     <!-- 功能列表区域 -->
     <view class="function-list" a:if="{{isAuthorized}}">
       <view class="function-group">
@@ -75,15 +76,14 @@
             <image class="arrow-icon" src="/assets/icons/arrow-right.png" mode="aspectFit"/>
           </view>
         </view>
+        <!-- 可以根据需要添加更多功能项 -->
       </view>
     </view>
-  
+
     <!-- 退出登录按钮 -->
     <view class="logout-section" a:if="{{isAuthorized}}">
       <button class="logout-btn" onTap="handleLogout">退出登录</button>
     </view>
-  
-    <custom-tabbar current="user"></custom-tabbar>
   </view>
 </template>
 
